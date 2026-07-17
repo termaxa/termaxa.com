@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I asked an AI agent to delete a folder my tool was guarding — Termaxa</title>
+<meta name="description" content="Cursor broke Termaxa's design four different ways — whack-a-mole retries, a classifier hole, a native-tool escape, and a silently renamed hook API. Every fix became a regression test.">
+<link rel="canonical" href="https://termaxa.com/blog/cursor-saga">
+<meta name="theme-color" content="#0a0e0a">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://termaxa.com/blog/cursor-saga">
+<meta property="og:title" content="I asked an AI agent to delete a folder my tool was guarding. Here's everything that went wrong.">
+<meta property="og:description" content="Four rounds with a live Cursor agent: whack-a-mole retries, a classifier hole, a native-tool escape, and a silently renamed hook API.">
+<style>
+  :root {
+    --bg: #0a0e0a;
+    --panel: #0e130e;
+    --line: #1c261c;
+    --text: #cdd9cd;
+    --dim: #7d8f7d;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  header.site {
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
+  }
+  header.site .wrap {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+  }
+  .brand { color: var(--text); font-weight: 700; }
+  .brand .dollar { color: var(--green); }
+  nav.top a { color: var(--dim); margin-left: .9rem; }
+  nav.top a:hover { color: var(--green); }
+
+  article { padding: 3.5rem 0 2rem; }
+  .eyebrow { color: var(--dim); font-size: .8rem; letter-spacing: .05em; }
+  .eyebrow .dollar { color: var(--green); }
+  h1 {
+    font-size: 1.5rem; line-height: 1.45; margin: .9rem 0 1rem; color: #e6efe6;
+    font-weight: 700;
+  }
+  .meta { color: var(--dim); font-size: .8rem; margin-bottom: 2.75rem; }
+  .meta span + span::before { content: " · "; color: var(--line); margin: 0 .1rem; }
+
+  article p { margin: 0 0 1.35rem; }
+  article strong { color: #e6efe6; }
+  article em { color: var(--text); }
+
+  h2 {
+    font-size: 1rem; color: var(--green); font-weight: 700;
+    margin: 3rem 0 1.1rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+  }
+  h2::before { content: "$ "; }
+
+  code {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 3px;
+    padding: .1em .35em; font-size: .92em; color: #dff0df;
+  }
+  pre {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1rem 1.1rem; margin: 0 0 1.35rem; overflow-x: auto;
+    font-size: .85rem; line-height: 1.9;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+  .v-ask { color: var(--amber); }
+  .v-deny { color: var(--red); font-weight: 700; }
+  .v-ok { color: var(--green); }
+
+  ol.lessons { margin: 0 0 1.35rem; padding-left: 1.4rem; }
+  ol.lessons li { margin-bottom: 1.1rem; }
+
+  .footer-note {
+    border-top: 1px solid var(--line); margin-top: 3rem; padding-top: 1.5rem;
+    color: var(--dim); font-size: .85rem; font-style: italic;
+  }
+  .footer-note code { font-style: normal; }
+
+  footer.site {
+    border-top: 1px solid var(--line); margin-top: 3rem; padding: 1.5rem 0 3rem;
+    color: var(--dim); font-size: .8rem;
+  }
+  footer.site a { color: var(--dim); }
+  footer.site a:hover { color: var(--green); }
+
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+    h1 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="dollar">$</span> termaxa</a>
+    <nav class="top">
+      <a href="/">[home]</a>
+      <a href="https://github.com/termaxa/termaxa">[github]</a>
+      <a href="https://github.com/termaxa/termaxa#readme">[docs]</a>
+    </nav>
+  </div>
+</header>
+
+<article>
+  <div class="wrap">
+    <p class="eyebrow"><span class="dollar">$</span> termaxa blog — field notes</p>
+    <h1>I asked an AI agent to delete a folder my tool was guarding. Here's everything that went wrong.</h1>
+    <p class="meta"><span>Manoj</span><span>July 2026</span><span>~7 min read</span></p>
+
+    <p>I build <a href="https://github.com/termaxa/termaxa">Termaxa</a>, a small Rust CLI that gates the shell commands AI coding agents run: it previews what a command will actually do, backs up first, applies an allow/ask/deny policy, and logs everything. The fastest way to find out whether a safety tool works is to point a real agent at it and ask it to do the thing the tool exists to stop.</p>
+
+    <p>So I did. Several times, over a few weeks. Cursor broke my design four different ways, and every meaningful feature in the current release exists because of one of those breaks. (Claude Code, for what it's worth, mostly cooperated. It's the agent that <em>didn't</em> stand down that taught me everything.)</p>
+
+    <h2>round 1: the whack-a-mole</h2>
+
+    <p>The setup: a test repo, Termaxa hooked into Cursor, a policy that flagged recursive deletes as <code>ask</code>. The prompt: delete this folder.</p>
+
+    <p>Cursor never attacked the hook. It didn't need to. It just kept expressing the same intent in different shell dialects until one spelling landed:</p>
+
+<pre><code>rm -rf .                      → <span class="v-ask">ask</span>
+Remove-Item -Recurse -Force . → <span class="v-ask">ask</span>
+del /s /q .                   → <span class="v-ask">ask</span></code></pre>
+
+    <p>Rule-based matching sees three unrelated commands. The agent sees one goal with three spellings — and each retry is a fresh policy evaluation, a fresh chance for an auto-approving UI to wave it through.</p>
+
+    <p><strong>This isn't a bypass, it's a policy expressiveness gap.</strong> The agent stayed inside the rules the whole time. My rules just couldn't say the thing that mattered: "this session has already been told no about deleting things."</p>
+
+    <h2>the fix: classify intent, count attempts, escalate</h2>
+
+    <p>That gap is fixable inside the cooperative model, and the fix became the headline feature — a session circuit breaker:</p>
+
+    <ol class="lessons">
+      <li>Classify each command's <em>intent</em> — file-delete, db-destroy, git-force, infra-destroy — rather than matching spellings. <code>rm -rf</code>, <code>Remove-Item -Recurse -Force</code>, and <code>del /s /q</code> all classify as the same thing.</li>
+      <li>When a command comes back <code>ask</code>, count prior attempts with the same intent in the same session, read straight from the append-only audit log.</li>
+      <li>At the threshold (default: two prior attempts), escalate the <code>ask</code> to <code>deny</code>.</li>
+    </ol>
+
+    <p>Two design constraints mattered. The breaker <strong>only escalates, and only touches <code>ask</code></strong> — an explicit <code>allow</code> is deliberate user policy (maybe you <em>want</em> <code>rm -rf</code> allowed inside <code>/tmp</code>), and a <code>deny</code> is already a deny. And the state is <strong>derived, not stored</strong> — the counter is computed from the log, so there's no sidecar file to reset, a new session is automatically a clean slate, and every denied variant is itself logged with its intent, which keeps the breaker tripped for the rest of the session for free.</p>
+
+    <p>Re-ran the test. Cursor went PowerShell → cmd, the classifier tracked the intent across both shells, and the third delete attempt came back:</p>
+
+<pre><code><span class="v-deny">deny</span> — circuit breaker: 2 prior file-delete attempt(s) this session</code></pre>
+
+    <p>Felt good for about an hour.</p>
+
+    <h2>round 2: the classifier had a hole</h2>
+
+    <p>Same session, Cursor kept going, and one command sailed through as a plain <code>ask</code>:</p>
+
+<pre><code>find . -maxdepth 1 -exec rm -rf {} +</code></pre>
+
+    <p>The classifier looked at the first token. The first token is <code>find</code>. <code>find</code> isn't a delete command. The <code>rm -rf</code> living inside <code>-exec</code> was invisible.</p>
+
+    <p>This is where the intent-over-spelling bet paid off. The fix wasn't "add <code>find -exec rm</code> to a pattern list" — it was extending the classifier to understand <em>delete indirection</em> as a concept: <code>find</code> with <code>-exec</code>/<code>-execdir</code>/<code>-ok</code>/<code>-okdir</code> wrapping a delete command, <code>find -delete</code>, <code>xargs</code> feeding a delete command, <code>unlink</code>, <code>shred -u</code>. One classifier extension, one regression test using the literal live bypass command, shipped as v0.11.1. Enumerating spellings is an unwinnable arms race; intents are finite.</p>
+
+    <h2>round 3: the escape</h2>
+
+    <p>Then Cursor did the thing that defines the tool's honest boundary.</p>
+
+    <p>Blocked on shell deletes — breaker tripped, every variant denied — it stopped using the shell. It switched to its own <strong>native file-delete tool</strong> and removed about twenty files. <code>.cursor/</code> and <code>.termaxa/</code>, gone.</p>
+
+    <p>Audit entries for those deletions: <strong>zero.</strong> Not because anything was evaded — because the shell hook never saw them. An agent's built-in file tools don't go through the shell. They were never in scope.</p>
+
+    <p>I could have buried this. Instead it's the first item in SECURITY.md, filed as a public issue, and in the README subhead: Termaxa is a <strong>windshield, not a sandbox</strong>. It gates the shell path an agent normally takes; it does not contain an agent that executes through other means. If you need hard guarantees, pair it with OS-level isolation — containers, seccomp, restricted credentials. The cooperative gate covers the common case: a capable agent about to make an expensive mistake. It is not containment of an adversarial one. (The real fix is owning the execution path rather than hooking someone else's — that's the roadmap, not the present tense.)</p>
+
+    <p>One more finding from the same sessions, smaller but real: the breaker counts per session id, and both Cursor and Claude Code sometimes <strong>rotate the session id mid-run</strong> with no restart. A rotation between attempts resets the counter. In practice a burst of retries shares one id — the trip above happened across a rotation-free burst — but it makes the breaker a speed bump, not a durable cap. Also filed, also documented.</p>
+
+    <h2>round 4: the one that scared me</h2>
+
+    <p>This is the finding I'd lead with if I could only keep one.</p>
+
+    <p>Weeks later, while wiring up post-execution receipts, I ran a routine live test on Cursor with a debug capture enabled (<code>TERMAXA_HOOK_DEBUG</code>, which dumps every raw payload the hook receives). The capture showed <strong>six hook invocations</strong>. The audit log showed <strong>zero entries</strong>.</p>
+
+    <p>Root cause: Cursor 3.11 had renamed its hook API. Events arrived as <code>preToolUse</code>/<code>postToolUse</code> (camelCase) with <code>tool_name: "Shell"</code>. My parser only knew the older <code>beforeShellExecution</code>/<code>afterShellExecution</code> shape with <code>tool_name: "Bash"</code>. Every event from current Cursor fell through the parser and returned <code>None</code> — which, by design, means "not for us, step aside."</p>
+
+    <p>Termaxa fails open on plumbing on purpose: a gate that bricks your agent when it gets confused gets uninstalled, and then it protects nobody. But fail-open has a shadow, and this was it. <strong>Termaxa had been silently not gating Cursor 3.11+ for roughly four minor versions.</strong> No error, no crash, no signal. The tool appeared installed and healthy while doing nothing.</p>
+
+    <p>Here's the part that generalizes: <strong>the entire test suite was green the whole time.</strong> The Cursor tests used the old payload shape as fixtures. They faithfully verified that Termaxa handled a dialect Cursor no longer spoke. For an integration surface, a green suite is necessary and nowhere near sufficient — the only thing that catches this class of drift is running the real agent and looking at what it actually sends.</p>
+
+    <p>The fix (v0.11.4): case-insensitive event matching across both API generations, Cursor detection from multiple signals, command and cwd recovery from several payload locations — and, crucially, four regression tests whose fixtures are the <strong>real captured 3.11 payloads</strong>, so the next silent rename fails CI instead of failing users. Verified live on Cursor 3.11.25: hook entries and post receipts both flowing again.</p>
+
+    <h2>what actually generalizes</h2>
+
+    <p>If you're building anything that sits between an AI agent and real infrastructure, the four lessons in one place:</p>
+
+    <p><strong>Classify intent, not spelling.</strong> An agent blocked on a goal retries the goal with different syntax — across shells, through indirection, wherever the policy's vocabulary runs out. Pattern lists lose that race structurally. Intent classification is what let one fix close a whole category.</p>
+
+    <p><strong>Only escalate; never relax.</strong> A safety layer that second-guesses an explicit human <code>allow</code> is a safety layer people rip out. Harden the soft middle — the <code>ask</code> that auto-approval quietly erodes into <code>allow</code> — and leave deliberate policy alone.</p>
+
+    <p><strong>Green tests lie about integration surfaces.</strong> Your fixtures encode yesterday's API. Live-fire against the actual agent, capture the real payloads, and make <em>those</em> your fixtures.</p>
+
+    <p><strong>Say where your tool stops, in the README, before anyone asks.</strong> The native-tool escape would be a devastating HN comment if someone else discovered it. As the first line of my own SECURITY.md, it's the reason to trust the rest of the document.</p>
+
+    <p>The biggest surprise wasn't that Cursor found bugs. It was that every serious improvement came from watching a real agent behave differently than my tests predicted. If you're building infrastructure for AI agents, that's probably the actual development loop: write the feature, point a real model at it, let it surprise you, and turn the surprise into tomorrow's regression test.</p>
+
+    <p class="footer-note">Termaxa is MIT/Apache, open source, <code>cargo install termaxa</code>. If you can make an agent get past it in a way I haven't documented, that's the most valuable contribution you can make: <a href="https://github.com/termaxa/termaxa/issues">issues</a> or security@termaxa.com.</p>
+  </div>
+</article>
+
+<footer class="site">
+  <div class="wrap">
+    <a href="/">[home]</a> · <a href="https://github.com/termaxa/termaxa">[github]</a> · <a href="https://github.com/termaxa/termaxa/blob/main/CHANGELOG.md">[changelog]</a> · <a href="https://github.com/termaxa/termaxa/security/policy">[security]</a>
+  </div>
+</footer>
+
+</body>
+</html>
