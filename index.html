@@ -9,6 +9,10 @@
 <meta property="og:description" content="Preview what will happen. Protect what matters. Roll back when you're wrong. A windshield, not a sandbox.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://termaxa.com">
+<meta property="og:image" content="https://termaxa.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0a0e0a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -23,8 +27,7 @@
     --green:#4ade80; --amber:#fbbf24; --red:#f87171; --blue:#60a5fa;
     --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
     --maxw:1000px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
+  }*{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
@@ -35,8 +38,10 @@
   main{position:relative;z-index:1}
   /* top nav as shell tokens */
   header{display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-  .brand{color:var(--green);font-weight:700}
+  .brand{color:var(--green);font-weight:700;display:flex;align-items:center;gap:10px}
   .brand .c{color:var(--fg-faint)}
+  .brand .mark{display:flex;align-items:center;gap:5px}
+  .brand .mark svg{display:block}
   nav{display:flex;gap:8px;flex-wrap:wrap}
   nav a{color:var(--fg-dim);padding:3px 4px}
   nav a:hover{color:var(--green)}
@@ -103,6 +108,10 @@
   .bug .t{color:var(--amber);display:flex;gap:8px;margin-bottom:8px}
   .bug .d{color:var(--fg-dim);font-size:13px}
   .bug .v{color:var(--green)}
+  .more-link{margin-top:16px;color:var(--fg-dim)}
+  .more-link a{color:var(--fg-dim);border-bottom:1px dotted var(--line-2)}
+  .more-link a:hover{color:var(--green);border-color:var(--green)}
+  .more-link .p{color:var(--green)}
   /* live agent gif band */
   .agent{border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:var(--panel)}
   .agent .head{padding:20px 24px 6px}
@@ -135,7 +144,7 @@
   /* footer prompt */
   .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:22px 0 8px;color:var(--fg-faint)}
   .foot .ver .p{color:var(--green)}
-  .foot .links{display:flex;gap:20px}
+  .foot .links{display:flex;gap:20px;flex-wrap:wrap}
   .foot .links a:hover{color:var(--green)}
   .sibling{color:var(--fg-faint);font-size:12.5px;padding:8px 0 6px}
  .sibling a{color:var(--fg-dim);border-bottom:1px dotted var(--line-2)}
@@ -155,7 +164,13 @@
 <body>
 <main>
 <header>
-  <div class="brand"><span class="c">$</span> termaxa</div>
+  <div class="brand">
+    <span class="mark" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="22" rx="5" fill="#4ade80"/><path d="M8 6.5 13 11l-5 4.5" fill="none" stroke="#0a0e0a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="12" height="22" viewBox="0 0 12 22" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="2" width="2.6" height="18" rx="1.3" fill="#4ade80"/><rect x="4.7" y="2" width="2.6" height="18" rx="1.3" fill="#fbbf24"/><rect x="9.4" y="2" width="2.6" height="18" rx="1.3" fill="#f87171"/></svg>
+    </span>
+    <span><span class="c">$</span> termaxa</span>
+  </div>
   <nav>
     <a href="#what"><span class="b">[</span>what<span class="b">]</span></a>
     <a href="#roadmap"><span class="b">[</span>roadmap<span class="b">]</span></a>
@@ -312,6 +327,7 @@
         <div class="d">Cursor 3.11 renamed its hook events — and Termaxa silently stopped gating it. Every test stayed green (fixtures used the old shape). Caught live via payload capture, fixed the same night; the real 3.11 payloads are regression tests now. <span class="v">(v0.11.4)</span></div>
       </div>
     </div>
+    <div class="more-link"><span class="p">$</span> <a href="/blog/cursor-saga">read the full story → four rounds with a live agent</a></div>
   </section>
   <!-- WHATS NEXT + FREE -->
   <section id="roadmap">
@@ -367,6 +383,7 @@
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
       <a href="https://github.com/termaxa/termaxa/security/policy">security</a>
+      <a href="mailto:security@termaxa.com">security@termaxa.com</a>
       <a href="https://github.com/termaxa/termaxa/blob/main/CHANGELOG.md">changelog</a>
     </div>
   </div>
