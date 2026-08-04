@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code shipped a sandbox — what it protects and what it doesn't | Termaxa</title>
+<meta name="description" content="Claude Code's sandbox is OS-enforced and Bash-only, reads are wider than writes, the escape hatch is permissioned, it fails open, and it doesn't run on native Windows. Containment is not consequence is not recovery.">
+<link rel="canonical" href="https://termaxa.com/blog/claude-code-sandbox">
+<meta name="theme-color" content="#0a0e0a">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://termaxa.com/blog/claude-code-sandbox">
+<meta property="og:title" content="Claude Code shipped a sandbox. Here's what it protects — and what it doesn't.">
+<meta property="og:description" content="Bash-only scope, reads wider than writes, a permissioned escape hatch, fail-open, no native Windows — and the distinction that matters: containment ≠ consequence ≠ recovery.">
+<meta property="og:image" content="https://termaxa.com/og-claude-code-sandbox.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0e0a; --panel:#0d130d; --line:#1c2a1c; --line-2:#243824;
+    --text:#c8e6c8; --bright:#e6efe6; --dim:#6f9b6f; --faint:#4a6b4a;
+    --green:#4ade80; --amber:#fbbf24; --red:#f87171;
+    --mono:'JetBrains Mono',ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(74,222,128,.015) 0,rgba(74,222,128,.015) 1px,transparent 1px,transparent 3px);opacity:.5}
+  header.site, article, footer.site{position:relative;z-index:1}
+  a{color:var(--green);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .wrap{max-width:46rem;margin:0 auto;padding:0 1.25rem}
+  header.site{border-bottom:1px solid var(--line);padding:1rem 0}
+  header.site .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+  .brand{color:var(--green);font-weight:700;display:flex;align-items:center;gap:10px}
+  .brand:hover{text-decoration:none}
+  .brand .dollar{color:var(--faint)}
+  .brand .mark{display:flex;align-items:center;gap:5px}
+  .brand .mark svg{display:block}
+  nav.top{display:flex;gap:8px;flex-wrap:wrap}
+  nav.top a{color:var(--dim);padding:3px 4px}
+  nav.top a:hover{color:var(--green);text-decoration:none}
+  nav.top a .b{color:var(--faint)}
+  article{padding:3.5rem 0 2rem}
+  .eyebrow{color:var(--dim);font-size:.8rem;letter-spacing:.05em}
+  .eyebrow .dollar{color:var(--green)}
+  h1{font-size:1.5rem;line-height:1.45;margin:.9rem 0 1rem;color:var(--bright);font-weight:700}
+  .meta{color:var(--dim);font-size:.8rem;margin-bottom:2.75rem}
+  .meta span + span::before{content:" · ";color:var(--faint);margin:0 .1rem}
+  article p{margin:0 0 1.35rem}
+  article strong{color:var(--bright)}
+  article em{color:var(--text)}
+  h2{font-size:1rem;color:var(--green);font-weight:700;margin:3rem 0 1.1rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+  h2::before{content:"$ "}
+  code{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:.1em .35em;font-size:.92em;color:#dff0df}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;margin:0 0 1.35rem;overflow-x:auto;font-size:.85rem;line-height:1.9}
+  pre code{background:none;border:none;padding:0;font-size:inherit}
+  ul{margin:0 0 1.35rem;padding-left:1.4rem}
+  li{margin-bottom:.6rem}
+  .three{display:grid;grid-template-columns:1fr;gap:1rem;margin:0 0 1.35rem}
+  .three .cell{border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;background:rgba(0,0,0,.2)}
+  .three .w{font-weight:700;letter-spacing:.04em;margin-bottom:.35rem}
+  .three .c1 .w{color:var(--green)} .three .c2 .w{color:var(--amber)} .three .c3 .w{color:var(--red)}
+  .three .q{color:var(--dim);font-size:.9rem}
+  .footer-note{border-top:1px solid var(--line);margin-top:3rem;padding-top:1.5rem;color:var(--dim);font-size:.85rem;font-style:italic}
+  .footer-note code{font-style:normal}
+  footer.site{border-top:1px solid var(--line);margin-top:3rem;padding:1.5rem 0 3rem;color:var(--dim);font-size:.8rem}
+  footer.site a{color:var(--dim)}
+  footer.site a:hover{color:var(--green)}
+  @media (max-width:480px){body{font-size:14px}h1{font-size:1.25rem}}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <span class="mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="22" rx="5" fill="#4ade80"/><path d="M8 6.5 13 11l-5 4.5" fill="none" stroke="#0a0e0a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="12" height="22" viewBox="0 0 12 22" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="2" width="2.6" height="18" rx="1.3" fill="#4ade80"/><rect x="4.7" y="2" width="2.6" height="18" rx="1.3" fill="#fbbf24"/><rect x="9.4" y="2" width="2.6" height="18" rx="1.3" fill="#f87171"/></svg>
+      </span>
+      <span><span class="dollar">$</span> termaxa</span>
+    </a>
+    <nav class="top">
+      <a href="/"><span class="b">[</span>home<span class="b">]</span></a>
+      <a href="https://github.com/termaxa/termaxa"><span class="b">[</span>github<span class="b">]</span></a>
+      <a href="https://github.com/termaxa/termaxa#readme"><span class="b">[</span>docs<span class="b">]</span></a>
+    </nav>
+  </div>
+</header>
+<article>
+  <div class="wrap">
+    <p class="eyebrow"><span class="dollar">$</span> termaxa blog — field notes</p>
+    <h1>Claude Code shipped a sandbox. Here's what it protects — and what it doesn't.</h1>
+    <p class="meta"><span>Manoj</span><span>August 2026</span><span>~6 min read</span></p>
+    <p>Anthropic shipped OS-level sandboxing for Claude Code. If you run an agent against a repo you care about, it's worth understanding precisely what moved — because a fair amount of the commentary treats it as "agents are contained now," and that's not what the documentation says.</p>
+
+    <p>I read the docs carefully, partly because I build a tool in adjacent territory and needed to know whether I'd just been made redundant. Short answer: no. The longer answer is more interesting, and it starts with a compliment: <strong>the docs are unusually honest about their own limits.</strong> Most of what follows isn't something I discovered — it's something Anthropic wrote down, and more people should read it.</p>
+
+    <h2>what it actually does</h2>
+
+    <p>The sandbox uses OS primitives — Seatbelt on macOS, bubblewrap on Linux and WSL2. By default, sandboxed commands can write only to your working directory and the session temp directory. No network domains are pre-allowed: the first time a command needs a new host you're prompted, and approving it lasts the session.</p>
+
+    <p>Crucially, this is enforced by the operating system on the <em>running process</em>, not by the model correctly interpreting a command. The docs put it well: the boundary holds regardless of what the model chose to run, and even if an allowed command does more than its name suggests. That's a real improvement over asking an agent nicely, and it's the right layer for what it solves.</p>
+
+    <p>The motivation named in the docs is the same one I keep seeing in the wild: reducing the permission prompts that people stop reading. Approval fatigue is the disease; this is a real treatment for part of it.</p>
+
+    <h2>five things worth knowing before you rely on it</h2>
+
+    <p><strong>It's Bash-only.</strong> The sandbox constrains Bash commands and their child processes. Claude Code's own Read, Edit and Write tools don't run through it — they go through the permission system instead. "The sandbox is on" means shell commands are contained, not that every file operation is.</p>
+
+    <p><strong>Your working directory is inside the boundary by design.</strong> The default write scope <em>is</em> the current working directory, plus session temp. That's what makes the agent useful — it has to edit your code. It also means the sandbox is not protecting the thing many developers assume it is. A destructive command confined to your project is still confined to your project.</p>
+
+    <p>There's a sharp exception worth knowing, and it cuts in the reassuring direction: even in auto-allow mode, <code>rm</code> and <code>rmdir</code> targeting <code>/</code>, your home directory, or other critical system paths still trigger a prompt or a classifier check, and explicit deny rules are always respected. Anthropic special-cased the catastrophic paths. Everything inside your working directory remains permitted, deliberately.</p>
+
+    <p><strong>Reads are much wider than writes.</strong> Default read access is the <em>entire computer</em> minus a few denied directories — and the docs say plainly that this still allows reading credential files such as <code>~/.aws/credentials</code> and <code>~/.ssh/</code>. If you want those protected you configure <code>sandbox.credentials</code> (deny, or mask) or add them to <code>denyRead</code>. There is no built-in credential deny list. This is the item I'd action first.</p>
+
+    <p><strong>There's an escape hatch, on by default — but it's permissioned.</strong> When a command fails because of sandbox restrictions, Claude may retry it with <code>dangerouslyDisableSandbox</code>. Importantly, that retry goes through the normal permission flow: a confirmation prompt in default mode, or the classifier in auto mode. So it isn't a silent bypass — it's a sanctioned door with a doorbell. If you want the door bricked up, <code>allowUnsandboxedCommands: false</code> enables what the panel calls Strict sandbox mode.</p>
+
+    <p><strong>It fails open.</strong> If the sandbox can't start — missing bubblewrap, unsupported platform — Claude Code warns and runs commands unsandboxed, unless you set <code>failIfUnavailable: true</code>. That's a defensible default (a safety layer that bricks your agent gets switched off, and then it protects nobody); I make the same choice in my own tool. But fail-open has a shadow: the thing can be inactive while everything looks fine. I learned that expensively when a hook API rename left my own tool silently gating nothing for four minor versions, with a fully green test suite.</p>
+
+    <p><strong>And on native Windows it doesn't run at all.</strong> Windows users are pointed at WSL2. If you run Claude Code natively on Windows — plenty do — the sandbox isn't in your picture.</p>
+
+    <h2>credit where it's due: the docs name their own gaps</h2>
+
+    <p>Before I make my argument, the Limitations section deserves reading in full, because it's more candid than most vendor security pages:</p>
+
+    <ul>
+      <li>The built-in proxy makes allow decisions from the client-supplied hostname and, by default, does not terminate or inspect TLS — so allowing broad domains like <code>github.com</code> can create paths for data exfiltration, with domain fronting named explicitly.</li>
+      <li><code>allowUnixSockets</code> can inadvertently grant host access: allowing <code>/var/run/docker.sock</code> effectively grants access to the host system.</li>
+      <li><code>allowAppleEvents</code> on macOS removes code-execution isolation.</li>
+      <li><code>enableWeakerNestedSandbox</code> considerably weakens security.</li>
+      <li>And the summary line: sandboxing reduces risk but is not a complete isolation boundary.</li>
+    </ul>
+
+    <p>That's a vendor telling you where their boundary ends. Take them at their word rather than at the marketing.</p>
+
+    <h2>the distinction that actually matters</h2>
+
+    <p>Containment, consequence and recovery are three different questions, and tools tend to answer exactly one:</p>
+
+    <div class="three">
+      <div class="cell c1"><div class="w">CONTAINMENT</div><div class="q">Can this process touch things outside its box? That's the sandbox, Docker, seccomp. A boundary in space.</div></div>
+      <div class="cell c2"><div class="w">CONSEQUENCE</div><div class="q">What will this specific command destroy if it runs? Fifty thousand rows. Three dependent tables. One commit that exists only on the remote. A containment boundary has no opinion about this, because a permitted command inside the boundary is just a permitted command.</div></div>
+      <div class="cell c3"><div class="w">RECOVERY</div><div class="q">And if it happens anyway, can I get it back? Neither containment nor prediction gets you here. This is a backup taken before execution, and a path back.</div></div>
+    </div>
+
+    <p>The failures I've been collecting all month live in the second and third categories. An agent following NTFS junctions out of a <code>Windows.old</code> cleanup into someone's live Documents folder. Prompt-configured rules — "don't touch .env" — ignored, because instructions are suggestions and the execution path doesn't read your CLAUDE.md. <code>rm -rf ~/.crit/reviews/$SID</code> where <code>$SID</code> had already been cleared, so it expanded to nothing and took the parent directory.</p>
+
+    <p>Notice what those share. None is an agent doing something obviously stupid. Each is a <strong>correct-looking command whose real scope differs from its apparent scope.</strong> Containment doesn't address that class, because the command was allowed to run in the place it ran.</p>
+
+    <h2>what I'd actually do</h2>
+
+    <p><strong>Turn the sandbox on.</strong> It's built in, OS-enforced, and it closes a real category. On Windows that means WSL2 or nothing — worth knowing before you assume you're covered.</p>
+
+    <p><strong>Then convert three soft defaults into firm ones</strong>, each a one-line change:</p>
+
+<pre><code>{
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "allowUnsandboxedCommands": false,
+    "credentials": {
+      "files": [
+        { "path": "~/.aws/credentials", "mode": "deny" },
+        { "path": "~/.ssh", "mode": "deny" }
+      ]
+    }
+  }
+}</code></pre>
+
+    <p>Know it's broken rather than assume it's working; make the boundary hold rather than negotiate; and stop sandboxed commands reading your keys, since the default read policy allows it.</p>
+
+    <p><strong>Then be clear-eyed that you've solved containment, not consequence or recovery.</strong> For those: least-privilege credentials — an agent token that <em>cannot</em> drop your production tables beats any prompt asking it not to — backups that happen <em>before</em> execution rather than on a nightly cron, and, if you want it, something that shows the blast radius while there's still a decision to make.</p>
+
+    <p>That last part is what I build (<a href="https://github.com/termaxa/termaxa">Termaxa</a>, open source, Rust). I'm obviously not neutral. But the argument survives without it: vendors will keep shipping containment, because containment is what a platform can own. Consequence and recovery sit at a different layer, and structurally, no agent vendor is going to build that layer for their competitors' agents. Anthropic won't gate Cursor. Cursor won't gate Claude Code. If you run more than one, that layer has to come from somewhere else.</p>
+
+    <h2>the honest summary</h2>
+
+    <p>Claude Code's sandbox is a good, real improvement that answers one of three questions well, and its documentation is refreshingly clear about where it stops. It's Bash-scoped; reads are far wider than writes and include your credentials by default; the escape hatch is on but permissioned; it fails open; and it isn't there at all on native Windows.</p>
+
+    <p>Read the limitations section. Flip the flags that matter to you from soft to firm. And keep a backup — because the thing that gets you won't look dangerous. It'll look like a command you'd have approved.</p>
+
+    <p class="footer-note">Verified against Claude Code's <a href="https://code.claude.com/docs/en/sandboxing">sandboxing documentation</a>, August 2026. Incidents referenced are public posts from r/ClaudeAI, r/ClaudeCode and r/cursor over the past two weeks. The docs move quickly; where this and the documentation disagree, the documentation is right and I'm out of date. Termaxa is MIT/Apache, <code>cargo install termaxa</code>.</p>
+  </div>
+</article>
+<footer class="site">
+  <div class="wrap">
+    <a href="/">[home]</a> · <a href="https://github.com/termaxa/termaxa">[github]</a> · <a href="/blog/cursor-saga">[cursor saga]</a> · <a href="https://github.com/termaxa/termaxa/security/policy">[security]</a> · <a href="mailto:security@termaxa.com">security@termaxa.com</a>
+  </div>
+</footer>
+</body>
+</html>
