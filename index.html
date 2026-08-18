@@ -298,10 +298,10 @@
   <section>
     <div class="lab">by the numbers</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">19</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~6,300</div><div class="l">lines of Rust</div></div>
-      <div class="num-cell"><div class="v">83</div><div class="l">regression tests</div></div>
-      <div class="num-cell"><div class="v">7</div><div class="l">bugs found in the wild</div></div>
+      <div class="num-cell"><div class="v">21</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~10,500</div><div class="l">lines of Rust</div></div>
+      <div class="num-cell"><div class="v">444</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">9</div><div class="l">bugs found in the wild</div></div>
       <div class="num-cell"><div class="v">2</div><div class="l">live agents tested</div></div>
     </div>
   </section>
@@ -333,6 +333,14 @@
         <div class="d">Two engines parsed the same command independently. <code>rm -rf C:\Users\x\Desktop</code> was insured; <code>rm -rf /c/Users/x/Desktop</code> — the same directory — silently wasn't. Found by building the delete preview and comparing the two. They now share one implementation. <span class="v">(v0.14)</span></div>
       </div>
       <div class="bug">
+        <div class="t">⚠ an escaped quote walked past the gate</div>
+        <div class="d">A backslash-escaped quote collapsed a compound command into one segment, so an anchored deny rule never saw the second command: <code>echo \" ; terraform destroy</code> matched <code>echo *</code> and was allowed. Live since v0.7.0. Found by unifying two shell parsers and reading what they disagreed about — the disagreements were the bug list. Advisory published. <span class="v">(GHSA-rv66-7qcx-c45j, v0.16)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ the supervisor was never reached</div>
+        <div class="d">Supervised mode passed 439 unit tests, 18 privilege assertions and three green CI platforms. Then a real agent ran <code>ls -la</code> as a real second user, and the gate decided locally: its hook looked for the supervisor in its <em>own</em> home and found nothing there. The walls held; the door led nowhere. Every automated test had run both halves as the same user. <span class="v">(v0.17)</span></div>
+      </div>
+      <div class="bug">
         <div class="t">⚠ the agent's API moved under us</div>
         <div class="d">Cursor 3.11 renamed its hook events — and Termaxa silently stopped gating it. Every test stayed green (fixtures used the old shape). Caught live via payload capture, fixed the same night; the real 3.11 payloads are regression tests now. <span class="v">(v0.11.4)</span></div>
       </div>
@@ -359,7 +367,10 @@
     <div class="lab">what's next</div>
     <div class="split">
       <div class="next-box">
-        <div class="item"><span class="box">[ ]</span> termaxa runtime — enforcement, not just advice</div>
+        <div class="item"><span class="box">[x]</span> supervised mode — a daemon under <em>your</em> user decides; the agent runs as an account that cannot read the audit log, edit the backups, or stop it</div>
+        <div class="item"><span class="box">[x]</span> resolved-target rules — <code>&gt; .env</code> and <code>&gt; ./.env</code> are one file, not two strings</div>
+        <div class="item"><span class="box">[x]</span> hash-chained audit — an edited or removed entry is detectable</div>
+        <div class="item"><span class="box">[ ]</span> the rest of enforcement — <code>wrap</code> catches a shell by name, not <code>/bin/sh</code> by path</div>
         <div class="item"><span class="box">[ ]</span> plugin registry &amp; more agents</div>
         <div class="item"><span class="box">[x]</span> cursor — live-tested (incl. the 3.11 hook API)</div>
         <div class="item"><span class="box">[x]</span> post-execution receipts — approved commands don't trip the breaker</div>
@@ -368,7 +379,7 @@
         <div class="item"><span class="box">[x]</span> delete blast radius — what an <code>rm</code> actually costs</div>
         <div class="item"><span class="box">[ ]</span> codex / copilot (dialects built, unverified)</div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.14.0 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.17.0 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -393,7 +404,7 @@
     <div class="lab">install</div>
     <div class="install-row">
       <div class="install-cmd">
-        <span><span class="p">$</span> cargo install termaxa</span>
+        <span><span class="p">$</span> cargo install termaxa &amp;&amp; cd your-project &amp;&amp; termaxa init</span>
         <button class="copy" onclick="navigator.clipboard.writeText('cargo install termaxa');this.textContent='copied'">copy</button>
       </div>
       <span class="os">or grab a binary:</span>
@@ -406,7 +417,7 @@
     <div class="try-line">then try it instantly — no setup, no project config: <span class="c">termaxa check "rm -rf /"</span></div>
   </section>
   <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.14.0</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.17.0</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
