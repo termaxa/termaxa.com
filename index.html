@@ -298,11 +298,11 @@
   <section>
     <div class="lab">by the numbers</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">21</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~10,500</div><div class="l">lines of Rust</div></div>
-      <div class="num-cell"><div class="v">444</div><div class="l">regression tests</div></div>
-      <div class="num-cell"><div class="v">9</div><div class="l">bugs found in the wild</div></div>
-      <div class="num-cell"><div class="v">2</div><div class="l">live agents tested</div></div>
+      <div class="num-cell"><div class="v">20</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~11,300</div><div class="l">lines of Rust</div></div>
+      <div class="num-cell"><div class="v">488</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">10</div><div class="l">bugs found in the wild</div></div>
+      <div class="num-cell"><div class="v">3</div><div class="l">live agents tested</div></div>
     </div>
   </section>
   <!-- HARDENED BY REAL USE -->
@@ -344,6 +344,10 @@
         <div class="t">⚠ the agent's API moved under us</div>
         <div class="d">Cursor 3.11 renamed its hook events — and Termaxa silently stopped gating it. Every test stayed green (fixtures used the old shape). Caught live via payload capture, fixed the same night; the real 3.11 payloads are regression tests now. <span class="v">(v0.11.4)</span></div>
       </div>
+      <div class="bug">
+        <div class="t">⚠ Codex honoured none of our verdicts</div>
+        <div class="d">The first live Codex session: the hook fired on every command, and Codex rejected every answer — an explicit allow, an ask, and a deny that exited 2 all failed the hook and fell open to Codex's own prompt. Codex honours exactly one PreToolUse verdict, <code>deny</code>, on stdout with exit 0. Fixed the same weekend; the captured payload is a regression test now, and a hard stop lands in Codex's own UI as "Blocked by hook" with the blast radius. <span class="v">(v0.18)</span></div>
+      </div>
     </div>
   </section>
   <!-- FIELD NOTES -->
@@ -370,16 +374,19 @@
         <div class="item"><span class="box">[x]</span> supervised mode — a daemon under <em>your</em> user decides; the agent runs as an account that cannot read the audit log, edit the backups, or stop it</div>
         <div class="item"><span class="box">[x]</span> resolved-target rules — <code>&gt; .env</code> and <code>&gt; ./.env</code> are one file, not two strings</div>
         <div class="item"><span class="box">[x]</span> hash-chained audit — an edited or removed entry is detectable</div>
-        <div class="item"><span class="box">[ ]</span> the rest of enforcement — <code>wrap</code> catches a shell by name, not <code>/bin/sh</code> by path</div>
+        <div class="item"><span class="box">[x]</span> the gate reads what the agent actually runs — <code>sh -c</code> strings, <code>bash -lc</code>, a redirect that isn't a target, a PowerShell assignment</div>
+        <div class="item"><span class="box">[x]</span> the closed side, by choice — <code>unrecognised: deny</code> and <code>backup_failure: deny</code> for unattended runs</div>
+        <div class="item"><span class="box">[ ]</span> the rest of enforcement — <code>wrap</code> now executes what it approves, but catches a shell by name, not <code>/bin/sh</code> by path</div>
         <div class="item"><span class="box">[ ]</span> plugin registry &amp; more agents</div>
         <div class="item"><span class="box">[x]</span> cursor — live-tested (incl. the 3.11 hook API)</div>
         <div class="item"><span class="box">[x]</span> post-execution receipts — approved commands don't trip the breaker</div>
         <div class="item"><span class="box">[x]</span> execution report — session &amp; 30-day flight recorder</div>
         <div class="item"><span class="box">[x]</span> termaxa doctor — is the gate actually wired up?</div>
         <div class="item"><span class="box">[x]</span> delete blast radius — what an <code>rm</code> actually costs</div>
-        <div class="item"><span class="box">[ ]</span> codex / copilot (dialects built, unverified)</div>
+        <div class="item"><span class="box">[x]</span> codex — live-tested on Windows; its hooks can only deny, so an ask is a refusal there</div>
+        <div class="item"><span class="box">[ ]</span> copilot (dialect built, unverified)</div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.17.0 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.18.0 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -417,7 +424,7 @@
     <div class="try-line">then try it instantly — no setup, no project config: <span class="c">termaxa check "rm -rf /"</span></div>
   </section>
   <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.17.0</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.18.0</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
