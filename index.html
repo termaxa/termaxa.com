@@ -165,6 +165,43 @@
   .maker .sig a{color:var(--fg-dim);border-bottom:1px dotted var(--line-2)}
   .maker .sig a:hover{color:var(--green);border-color:var(--green)}
 </style>
+<style>
+  /* v0.19.4 rebuild: the hero is the demo */
+  .live{border:1px solid var(--line-2);border-radius:10px;background:rgba(0,0,0,.35);padding:18px 18px 14px;margin-top:18px}
+  .live .hint{color:var(--fg-dim);font-size:12.5px;margin-bottom:10px}
+  .live .chips2{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .live .chip2{border:1px solid var(--line-2);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--fg);cursor:pointer;background:transparent;font-family:var(--mono)}
+  .live .chip2:hover{border-color:var(--green);color:var(--green)}
+  .live .row2{display:flex;gap:10px;align-items:stretch}
+  .live input{flex:1;background:#050805;border:1px solid var(--line-2);border-radius:6px;color:var(--fg);font-family:var(--mono);font-size:14px;padding:10px 12px;outline:none}
+  .live input:focus{border-color:var(--green)}
+  .live button.go{background:var(--green);color:#0a0e0a;border:0;border-radius:6px;font-family:var(--mono);font-weight:700;font-size:13px;padding:0 18px;cursor:pointer}
+  .live button.go:disabled{opacity:.5;cursor:wait}
+  .live pre{margin-top:12px;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.55;color:var(--fg);min-height:3.2em}
+  .live pre .deny{color:var(--red);font-weight:700}.live pre .ask{color:var(--amber);font-weight:700}.live pre .allow{color:var(--green);font-weight:700}
+  .live .meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:10px;color:var(--fg-faint);font-size:11.5px}
+  .gif{margin-top:22px;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:#000}
+  .gif img{display:block;width:100%;height:auto}
+  .gif .cap{padding:10px 14px;color:var(--fg-dim);font-size:12px;border-top:1px solid var(--line)}
+  .harn{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:14px}
+  .harn .h{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--panel)}
+  .harn .h .t{font-weight:700;color:var(--fg)}.harn .h .d{color:var(--fg-dim);font-size:12px;margin-top:4px;line-height:1.55}
+  .harn .h .t .ic{width:14px;height:14px;vertical-align:-2px;margin-right:4px;color:var(--green)}
+  .harn .h.harness .t::before{content:"» ";color:var(--green)}
+  .harn .h.herdr{border-color:rgba(96,165,250,.4)}.harn .h.herdr .t{color:var(--blue)}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .tabs button{background:transparent;border:1px solid var(--line-2);border-bottom:0;border-radius:6px 6px 0 0;color:var(--fg-dim);font-family:var(--mono);font-size:12px;padding:6px 12px;cursor:pointer}
+  .tabs button.on{color:var(--green);border-color:var(--green)}
+  .tabpane{border:1px solid var(--line-2);border-radius:0 8px 8px 8px;padding:14px 16px;background:rgba(0,0,0,.3)}
+  .tabpane .cmd{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+  .tabpane code{font-size:13px;color:var(--fg);white-space:pre-wrap;word-break:break-all}
+  .tabpane .note{color:var(--fg-faint);font-size:11.5px;margin-top:8px}
+  .tabpane button.cp{color:var(--fg-faint);cursor:pointer;font-size:11px;border:1px solid var(--line);border-radius:5px;padding:3px 8px;background:transparent;font-family:var(--mono)}
+  .then{margin-top:12px;color:var(--fg-dim);font-size:12.5px}.then code{color:var(--fg)}
+  details.more{margin-top:14px}details.more summary{cursor:pointer;color:var(--green);font-size:12.5px;list-style:none}details.more summary::-webkit-details-marker{display:none}
+  details.more .bugs{margin-top:12px}
+  .split{align-items:start}
+</style>
 </head>
 <body>
 <main>
@@ -186,120 +223,87 @@
   </nav>
 </header>
 <div class="wrap">
+  <!-- HERO: the gate, live -->
   <div class="screen">
     <div class="screen-in">
       <div class="cmdline"><span class="p">$</span> <span class="cmd">termaxa</span> <span class="faint">— a cooperative gate for the shell commands AI agents run</span></div>
       <div class="wordmark"><svg class="wm-svg" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="termaxa">
-    <text x="0" y="68" font-family="'JetBrains Mono',monospace" font-weight="700"
-          font-size="82" letter-spacing="-2" fill="#4ade80">termaxa</text>
+    <text x="0" y="68" font-family="'JetBrains Mono',monospace" font-weight="700" font-size="82" letter-spacing="-2" fill="#4ade80">termaxa</text>
   </svg></div>
       <div class="tagline">Preview what will happen.<span class="s">  ·  </span>Protect what matters.<span class="s">  ·  </span>Roll back when you're wrong.</div>
-      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6">A cooperative gate for the <span style="color:var(--fg)">shell commands</span> your AI agent runs. It previews the blast radius, backs up first, and blocks the dangerous ones. <span style="color:var(--fg-dim)">A windshield, not a sandbox.</span></div>
-      <div style="margin-top:18px"><a href="https://play.termaxa.com" style="display:inline-block;color:#4ade80;text-decoration:none;border:1px solid rgba(74,222,128,.45);border-radius:6px;padding:7px 14px;font-size:clamp(12px,1.6vw,14px)">try it in your browser → play.termaxa.com</a></div>
-      <div style="color:var(--fg-faint);font-size:12px;margin-top:8px">the real gate on a throwaway project · nothing to install · try to beat it</div>
-      <div class="verdict">
-        <div class="row"><span class="dim">&gt; claude code wants to run:</span></div>
-        <div class="row"><span class="r">  DROP TABLE users;</span></div>
-        <div class="row" style="margin-top:8px"><span class="dim">&gt; termaxa says:</span></div>
-        <div class="impact-box">
-          <div>
-            <div class="h">│ ESTIMATED IMPACT</div>
-            <div class="kv"><span class="lbl">rows affected</span><span class="a">50,000</span></div>
-            <div class="kv"><span class="lbl">dependent tables</span><span class="a">3</span></div>
-            <div class="kv"><span class="lbl">force push</span><span class="a">1 commit lost</span></div>
-            <div class="kv"><span class="lbl">terraform destroy</span><span class="a">2 add, 1 destroy</span></div>
-          </div>
-          <div>            <div class="h">INSURANCE <span class="faint">(automatic)</span></div>
-            <div class="kv"><span class="lbl"><span class="g">✓</span> pg_dump</span><span class="g">✓</span></div>
-            <div class="kv"><span class="lbl"><span class="g">✓</span> git backup</span><span class="g">✓</span></div>
-            <div class="kv"><span class="lbl"><span class="g">✓</span> file snapshot</span><span class="g">✓</span></div>
-            <div class="kv"><span class="lbl"><span class="g">✓</span> audit record</span><span class="g">✓</span></div>
-          </div>
+      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6">A gate for the <span style="color:var(--fg)">shell commands and file writes</span> your AI coding agent runs. It previews the blast radius, backs up first, blocks the dangerous ones, and keeps a record the agent cannot rewrite. Hooks for Claude Code, Codex, Cursor and Copilot. A windshield, not a sandbox.</div>
+
+      <div class="live" id="live">
+        <div class="hint">This is the real gate, running on a throwaway project with the default policy. Nothing executes — <code>termaxa check</code> reads the command and answers. Try to get a destructive one past it.</div>
+        <div class="chips2">
+          <button class="chip2">rm -rf ./scratch</button>
+          <button class="chip2">git push --force origin main</button>
+          <button class="chip2">psql -c "DROP TABLE users CASCADE"</button>
+          <button class="chip2">echo TOKEN=abc123 &gt; .env</button>
+          <button class="chip2">ls &amp;&amp; echo ok &amp;&amp; rm -rf ./scratch</button>
+          <button class="chip2">git -C . push -f origin main</button>
+          <button class="chip2">ls -la</button>
         </div>
-        <div class="row"><span class="dim">&gt; approve? </span><span class="r">[y/N]</span> <span class="cur"></span></div>
+        <div class="row2">
+          <input id="livecmd" type="text" spellcheck="false" autocomplete="off" placeholder="type a command an agent might run…" value="rm -rf ./scratch">
+          <button class="go" id="livego">check it</button>
+        </div>
+        <pre id="liveout">$ termaxa check "rm -rf ./scratch"
+press check it, or pick a chip</pre>
+        <div class="meta"><span id="livestats"></span><span>full playground, with what counts as beating it: <a href="https://play.termaxa.com" style="color:var(--green)">play.termaxa.com</a></span></div>
+      </div>
+
+      <div class="gif">
+        <img src="/hero-claude-code.gif" width="1200" height="675" alt="Claude Code asked to force-push; Termaxa intercepts inside the agent's own prompt and shows the commit the remote would lose" loading="lazy">
+        <div class="cap">Inside the agent, not beside it: Claude Code asks to force-push, and the gate answers in its own prompt with the commit the remote would lose and the backup it already took. Nothing staged.</div>
       </div>
     </div>
   </div>
+
   <!-- WORKS WITH -->
   <section id="what">
     <div class="lab">works with</div>
-    <div class="works">
-      <div class="work git">
-        <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M23 11.1 12.9 1a1.6 1.6 0 0 0-2.3 0L8.5 3.1l2.7 2.7a1.9 1.9 0 0 1 2.4 2.4l2.6 2.6a1.9 1.9 0 1 1-1.1 1L12.6 9.4v6.4a1.9 1.9 0 1 1-1.6 0V9.4a1.9 1.9 0 0 1-1-2.5L7.3 4.2 1 10.5a1.6 1.6 0 0 0 0 2.3L11.1 23a1.6 1.6 0 0 0 2.3 0L23 13.4a1.6 1.6 0 0 0 0-2.3z"/></svg> git</div>
-        <div class="d">previews &amp; backups</div>
-      </div>
-      <div class="work pg">
-        <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> postgres</div>
-        <div class="d">blast radius &amp; rollback</div>
-      </div>
-      <div class="work tf">
-        <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3v6l5 3V6zM15 7v6l5-3V4zM9 11v6l5 3v-6zM3 5v6l5 3V8z"/></svg> terraform</div>
-        <div class="d">plan preview</div>
-      </div>
-      <div class="work sh">
-        <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 7 5 5-5 5M12 17h8"/></svg> shell</div>
-        <div class="d">policy &amp; shell-aware eval</div>
-      </div>
-      <div class="work"><div class="t">claude code · codex · cursor · copilot</div><div class="d">hooked and live-tested · <a href="https://github.com/termaxa/herdr-termaxa" style="color:inherit">herdr plugin</a></div></div>
+    <div class="harn">
+      <div class="h harness"><div class="t">claude code</div><div class="d">hook on Bash and the write tools · live-tested · <code>wrap</code> reaches it too</div></div>
+      <div class="h harness"><div class="t">codex</div><div class="d">hook, deny only: an ask is a refusal there · apply_patch read as writes</div></div>
+      <div class="h harness"><div class="t">cursor</div><div class="d">shell events and Write/Delete · the 3.11 hook API captured live</div></div>
+      <div class="h harness"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
+      <div class="h herdr harness"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/herdr-termaxa</code></div></div>
+    </div>
+    <div class="harn" style="margin-top:12px">
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M23 11.1 12.9 1a1.6 1.6 0 0 0-2.3 0L8.5 3.1l2.7 2.7a1.9 1.9 0 0 1 2.4 2.4l2.6 2.6a1.9 1.9 0 1 1-1.1 1L12.6 9.4v6.4a1.9 1.9 0 1 1-1.6 0V9.4a1.9 1.9 0 0 1-1-2.5L7.3 4.2 1 10.5a1.6 1.6 0 0 0 0 2.3L11.1 23a1.6 1.6 0 0 0 2.3 0L23 13.4a1.6 1.6 0 0 0 0-2.3z"/></svg> git</div><div class="d">what a force push would destroy, pinned before it runs</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> postgres</div><div class="d">rows and dependent tables, pg_dump first, rollback after</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3v6l5 3V6zM15 7v6l5-3V4zM9 11v6l5 3v-6zM3 5v6l5 3V8z"/></svg> terraform</div><div class="d">the plan before the apply</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 7 5 5-5 5M12 17h8"/></svg> shell</div><div class="d">policy, delete previews, insurance, the record</div></div>
     </div>
   </section>
-  <!-- LIVE DEMO -->
-  <section>
-    <div class="lab">live demo</div>
-    <div class="demos">
-      <div class="demo">
-        <div class="n"><span class="num">1.</span> predict</div>
-        <div class="ln"><span class="g">$</span> termaxa check "rm -rf /"
-<span class="r">✗ denied</span>: dangerous command
-  segment 2/2 → rm -rf /
-  <span class="faint">rule: filesystem.delete</span></div>
-        <div class="ms">10ms</div>
-      </div>
-      <div class="demo">
-        <div class="n"><span class="num">2.</span> protect</div>        <div class="ln"><span class="g">$</span> termaxa check "DROP TABLE users"
-→ <span class="a">50,000 rows</span>
-→ <span class="a">3 dependent tables</span>
-→ backup ready <span class="faint">(pg_dump)</span>
-→ <span class="g">rollback available</span></div>
-        <div class="ms">82ms</div>
-      </div>
-      <div class="demo">
-        <div class="n"><span class="num">3.</span> recover</div>
-        <div class="ln"><span class="g">$</span> termaxa rollback
-→ restoring…
-→ commit <span class="bl">a1b2c3d</span> restored
-→ <span class="a">50,000 rows</span> restored
-<span class="g">✓ done (17.3s)</span></div>
-        <div class="ms">17.3s</div>
+
+  <!-- INSTALL -->
+  <section id="install">
+    <div class="lab">install</div>
+    <div class="tabs" id="tabs">
+      <button class="on" data-cmd="brew install termaxa/tap/termaxa" data-note="macOS and Linux. Prebuilt, sha256-pinned; the formula's CI installs it on both before every release goes out.">brew</button>
+      <button data-cmd="cargo install termaxa" data-note="Any OS with a Rust toolchain. Builds from the crates.io source.">cargo</button>
+      <button data-cmd="winget install Termaxa.Termaxa" data-note="Windows. The winget manifest can lag a release by a day or two while Microsoft validates it.">winget</button>
+      <button data-cmd="scoop bucket add termaxa https://github.com/termaxa/scoop-bucket &amp;&amp; scoop install termaxa" data-note="Windows, always the current release.">scoop</button>
+      <button data-cmd="" data-note="Every asset is attested and checksummed. The Linux one is a static musl build that runs on any distro.">binaries</button>
+    </div>
+    <div class="tabpane">
+      <div class="cmd"><code id="tabcmd"><span class="p">$</span> brew install termaxa/tap/termaxa</code><button class="cp" id="tabcopy">copy</button></div>
+      <div class="note" id="tabnote">macOS and Linux. Prebuilt, sha256-pinned; the formula's CI installs it on both before every release goes out.</div>
+      <div class="chips" id="binchips" style="display:none;margin-top:10px">
+        <a class="chip" href="https://github.com/termaxa/termaxa/releases/latest/download/termaxa-linux-x86_64">linux x86_64</a>
+        <a class="chip" href="https://github.com/termaxa/termaxa/releases/latest/download/termaxa-macos-arm64">macos arm64</a>
+        <a class="chip" href="https://github.com/termaxa/termaxa/releases/latest/download/termaxa-macos-x86_64">macos x86_64</a>
+        <a class="chip" href="https://github.com/termaxa/termaxa/releases/latest/download/termaxa-windows-x86_64.exe">windows</a>
       </div>
     </div>
+    <div class="then">then, in a project: <code>termaxa init</code> writes the policy and the hook for whatever harness it finds · <code>termaxa doctor</code> proves it's wired · <code>termaxa replay</code> judges every command your agents have already run, so you know the ask ratio before you commit · <code>termaxa check "rm -rf /"</code> works anywhere, no setup</div>
   </section>
-  <!-- SEE IT LIVE (GIF) -->
-  <section>
-    <div class="lab">see it live</div>
-    <div class="agent">
-      <div class="head">
-        <h3>A real agent hits the gate.</h3>
-        <p>Claude Code attempting a command — intercepted by Termaxa, live, inside the agent's own prompt. Nothing staged.</p>
-      </div>
-      <div class="media">
-        <img src="hero-claude-code.gif" alt="Claude Code intercepted by Termaxa"
-          onerror="this.style.display='none';document.getElementById('fb').style.display='block'">
-        <div id="fb" class="fb" style="display:none"><span class="dim">&gt; force push my current branch to origin</span>
-<span class="faint">Running 1 shell command…</span>
-  <span class="faint">$ git push --force origin main</span>
-<span class="faint">Hook PreToolUse:Bash requires confirmation:</span>
-<span class="a">[termaxa]</span> Force push — remote history will be overwritten
-          <span class="a">| remote LOSES 1 commit</span> | backup b-1783…
-<span class="dim">Do you want to proceed?</span>
-<span class="g">&gt;</span> 1. Yes
-  2. No</div>
-      </div>
-    </div>
-  </section>
-  <!-- BY THE NUMBERS -->
-  <section>
-    <div class="lab">by the numbers</div>
+
+  <!-- HARDENED -->
+  <section id="hardened">
+    <div class="lab">hardened by real use</div>
     <div class="nums">
       <div class="num-cell"><div class="v">31</div><div class="l">releases</div></div>
       <div class="num-cell"><div class="v">~13,600</div><div class="l">lines of Rust <span class="faint">(+15,200 of tests)</span></div></div>
@@ -307,33 +311,14 @@
       <div class="num-cell"><div class="v">14</div><div class="l">bugs found in the wild</div></div>
       <div class="num-cell"><div class="v">4</div><div class="l">live agents tested</div></div>
     </div>
-  </section>
-  <!-- HARDENED BY REAL USE -->
-  <section>  <div class="lab">hardened by real use</div>
     <div class="bugs">
-      <div class="bug">
-        <div class="t">⚠ git force-push blind spot</div>
-        <div class="d">The preview said "nothing to push" while a force push destroyed a commit. Now it shows what the remote will lose. <span class="v">(v0.6.1)</span></div>
-      </div>
       <div class="bug">
         <div class="t">⚠ shell segmentation bypass</div>
         <div class="d">A live agent rode a destructive command in behind a harmless prefix. Compound commands are now split and judged per-segment. <span class="v">(v0.7)</span></div>
       </div>
       <div class="bug">
-        <div class="t">⚠ repo-owned audit logs</div>
-        <div class="d">Logs lived in the repo, so <code>git reset --hard</code> could erase them. State moved to <code>~/.termaxa</code>, out of git's reach. <span class="v">(v0.8)</span></div>
-      </div>
-      <div class="bug">
-        <div class="t">⚠ retry-with-different-syntax</div>
-        <div class="d">A live Cursor agent, blocked on a delete, switched shells (PowerShell → cmd) to sneak it past. Termaxa now classifies intent, not spelling, and trips a per-session circuit breaker on the repeat. <span class="v">(v0.11)</span></div>
-      </div>
-      <div class="bug">
         <div class="t">⚠ native tools bypass the shell</div>
         <div class="d">The same Cursor agent then used its built-in file tool, deleting files the shell hook never saw. For a year the answer was "non-shell tools need a sandbox". Since v0.19 the gate reads them: a <code>Write</code>, <code>Edit</code>, <code>Delete</code> or a patch's file headers is judged by the same path rules as a shell command, insured and receipted — and a file no rule names is silence, by design. Cursor's <code>Delete</code> passed through by default until a live capture on Sep 19. <span class="v">(v0.19–0.19.2)</span></div>
-      </div>
-      <div class="bug">
-        <div class="t">⚠ path syntax decided your backup</div>
-        <div class="d">Two engines parsed the same command independently. <code>rm -rf C:\Users\x\Desktop</code> was insured; <code>rm -rf /c/Users/x/Desktop</code> — the same directory — silently wasn't. Found by building the delete preview and comparing the two. They now share one implementation. <span class="v">(v0.14)</span></div>
       </div>
       <div class="bug">
         <div class="t">⚠ an escaped quote walked past the gate</div>
@@ -344,16 +329,36 @@
         <div class="d">Supervised mode passed 439 unit tests, 18 privilege assertions and three green CI platforms. Then a real agent ran <code>ls -la</code> as a real second user, and the gate decided locally: its hook looked for the supervisor in its <em>own</em> home and found nothing there. The walls held; the door led nowhere. Every automated test had run both halves as the same user. <span class="v">(v0.17)</span></div>
       </div>
       <div class="bug">
-        <div class="t">⚠ the agent's API moved under us</div>
-        <div class="d">Cursor 3.11 renamed its hook events — and Termaxa silently stopped gating it. Every test stayed green (fixtures used the old shape). Caught live via payload capture, fixed the same night; the real 3.11 payloads are regression tests now. <span class="v">(v0.11.4)</span></div>
-      </div>
-      <div class="bug">
         <div class="t">⚠ Codex honoured none of our verdicts</div>
         <div class="d">The first live Codex session: the hook fired on every command, and Codex rejected every answer — an explicit allow, an ask, and a deny that exited 2 all failed the hook and fell open to Codex's own prompt. Codex honours exactly one PreToolUse verdict, <code>deny</code>, on stdout with exit 0. Fixed the same weekend; the captured payload is a regression test now, and a hard stop lands in Codex's own UI as "Blocked by hook" with the blast radius. <span class="v">(v0.18)</span></div>
       </div>
       <div class="bug">
         <div class="t">⚠ the wrapper never saw Claude Code</div>
         <div class="d"><code>termaxa wrap</code> shipped on the promise that a shell resolved by name reaches the gate. Then <code>strace</code> on a real session: Claude Code runs <code>/bin/bash</code> by absolute path when it finds no zsh, and every command walked past the shims with zero audit lines. It honours <code>CLAUDE_CODE_SHELL</code>, so <code>wrap</code> now points it at the shim. Codex runs its login shell by absolute path and offers no such lever; its hooks are the way in, and the docs say so. <span class="v">(v0.18.5)</span></div>
+      </div>
+    </div>
+    <details class="more">
+      <summary>+ the other eight, with dates and versions →</summary>
+      <div class="bugs">
+      <div class="bug">
+        <div class="t">⚠ git force-push blind spot</div>
+        <div class="d">The preview said "nothing to push" while a force push destroyed a commit. Now it shows what the remote will lose. <span class="v">(v0.6.1)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ repo-owned audit logs</div>
+        <div class="d">Logs lived in the repo, so <code>git reset --hard</code> could erase them. State moved to <code>~/.termaxa</code>, out of git's reach. <span class="v">(v0.8)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ retry-with-different-syntax</div>
+        <div class="d">A live Cursor agent, blocked on a delete, switched shells (PowerShell → cmd) to sneak it past. Termaxa now classifies intent, not spelling, and trips a per-session circuit breaker on the repeat. <span class="v">(v0.11)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ path syntax decided your backup</div>
+        <div class="d">Two engines parsed the same command independently. <code>rm -rf C:\Users\x\Desktop</code> was insured; <code>rm -rf /c/Users/x/Desktop</code> — the same directory — silently wasn't. Found by building the delete preview and comparing the two. They now share one implementation. <span class="v">(v0.14)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ the agent's API moved under us</div>
+        <div class="d">Cursor 3.11 renamed its hook events — and Termaxa silently stopped gating it. Every test stayed green (fixtures used the old shape). Caught live via payload capture, fixed the same night; the real 3.11 payloads are regression tests now. <span class="v">(v0.11.4)</span></div>
       </div>
       <div class="bug">
         <div class="t">⚠ a delete with no verb in the list</div>
@@ -367,9 +372,10 @@
         <div class="t">⚠ the insurance followed the link</div>
         <div class="d">The preview counts a directory link as one entry and never walks into it. The backup copy branched on <code>is_dir()</code>, which follows links — so a folder holding a junction into a live tree passed the size cap as four files and then copied the whole tree behind it, uncapped, and a rollback would have put the link back as a real directory. That is the mechanism of a public incident that deleted 48,000 files through Windows junctions, inside our own insurance. A link is a link now. <span class="v">(v0.19.4)</span></div>
       </div>
-    </div>
+      </div>
+    </details>
   </section>
-  <!-- FIELD NOTES -->
+<!-- FIELD NOTES -->
   <section id="notes">
     <div class="lab">field notes</div>
     <div class="notes">
@@ -385,6 +391,7 @@
       </a>
     </div>
   </section>
+  
   <!-- WHATS NEXT + FREE -->
   <section id="roadmap">
     <div class="lab">what's next</div>
@@ -428,24 +435,7 @@
       <div class="sig">— <b>Manoj</b> · also the maker of <a href="https://zerodrop.dev">ZeroDrop</a>, email-verification infrastructure for developers</div>
     </div>
   </section>
-  <!-- INSTALL -->
-  <section>
-    <div class="lab">install</div>
-    <div class="install-row">
-      <div class="install-cmd">
-        <span><span class="p">$</span> brew install termaxa/tap/termaxa &amp;&amp; cd your-project &amp;&amp; termaxa init</span>
-        <button class="copy" onclick="navigator.clipboard.writeText('brew install termaxa/tap/termaxa');this.textContent='copied'">copy</button>
-      </div>
-      <span class="os">also: <span class="c">cargo install termaxa</span> · <span class="c">winget install Termaxa.Termaxa</span> · <span class="c">scoop bucket add termaxa https://github.com/termaxa/scoop-bucket &amp;&amp; scoop install termaxa</span> · or a binary:</span>
-      <div class="chips">
-        <a class="chip" href="https://github.com/termaxa/termaxa/releases">linux</a>
-        <a class="chip" href="https://github.com/termaxa/termaxa/releases">macos</a>
-        <a class="chip" href="https://github.com/termaxa/termaxa/releases">windows</a>
-      </div>
-    </div>
-    <div class="try-line">then try it instantly — no setup, no project config: <span class="c">termaxa check "rm -rf /"</span> · and before you decide: <span class="c">termaxa replay</span> judges every command your agents have already run</div>
-  </section>
-  <div class="foot">
+    <div class="foot">
     <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.19.4</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
@@ -460,6 +450,44 @@
 </div>
 </main>
 <script>
+(function(){
+  var API="https://play.termaxa.com";
+  var inp=document.getElementById("livecmd"),go=document.getElementById("livego"),out=document.getElementById("liveout"),st=document.getElementById("livestats");
+  function esc(x){return x.replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+  function render(text){
+    out.innerHTML=text.split("\n").map(function(l){
+      var m=l.match(/^(decision\s+)(allow|ask|deny)(.*)$/);
+      if(m)return esc(m[1])+'<span class="'+m[2]+'">'+m[2]+'</span>'+esc(m[3]);
+      return esc(l);
+    }).join("\n");
+  }
+  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed · bypasses found and fixed: 4";}catch(e){}}
+  function post(c){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({command:c})})}
+  async function check(){
+    var c=inp.value.trim();if(!c)return;go.disabled=true;
+    out.textContent="$ termaxa check "+JSON.stringify(c)+"\n…";
+    try{
+      var r=await post(c);
+      if(r.status===503){out.textContent="$ termaxa check "+JSON.stringify(c)+"\nbusy, retrying…";await new Promise(function(x){setTimeout(x,1500)});r=await post(c);}
+      if(!r.ok){out.textContent=await r.text();return;}
+      var j=await r.json();render("$ termaxa check "+JSON.stringify(c)+"\n"+j.output);stats();
+    }catch(e){out.textContent="the playground didn't answer ("+e+"). It's at play.termaxa.com.";}
+    finally{go.disabled=false;}
+  }
+  go.addEventListener("click",check);inp.addEventListener("keydown",function(e){if(e.key==="Enter")check()});
+  Array.prototype.forEach.call(document.querySelectorAll(".chip2"),function(b){b.addEventListener("click",function(){inp.value=b.textContent;check()})});
+  stats();
+  setTimeout(check,150);
+  var tabs=document.querySelectorAll("#tabs button"),cmd=document.getElementById("tabcmd"),note=document.getElementById("tabnote"),bins=document.getElementById("binchips"),cp=document.getElementById("tabcopy"),cur="brew install termaxa/tap/termaxa";
+  Array.prototype.forEach.call(tabs,function(t){t.addEventListener("click",function(){
+    Array.prototype.forEach.call(tabs,function(x){x.classList.remove("on")});t.classList.add("on");
+    cur=t.getAttribute("data-cmd")||"";note.textContent=t.getAttribute("data-note")||"";
+    if(cur){cmd.innerHTML='<span class="p">$</span> '+esc(cur);cmd.style.display="";cp.style.display="";bins.style.display="none";}
+    else{cmd.innerHTML='<span class="p">$</span> <span class="faint">download, checksum, put it on your PATH</span>';cp.style.display="none";bins.style.display="flex";}
+    cp.textContent="copy";
+  })});
+  cp.addEventListener("click",function(){navigator.clipboard.writeText(cur);cp.textContent="copied";});
+})();
 </script>
 </body>
 </html>
