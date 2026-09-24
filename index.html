@@ -268,11 +268,11 @@ press check it, or pick a chip</pre>
       <div class="h"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
       <div class="h herdr"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/herdr-termaxa</code></div></div>
     </div>
-    <div class="works" style="margin-top:12px">
-      <div class="work git"><div class="t">git</div><div class="d">previews &amp; backups</div></div>
-      <div class="work pg"><div class="t">postgres</div><div class="d">blast radius &amp; rollback</div></div>
-      <div class="work tf"><div class="t">terraform</div><div class="d">plan preview</div></div>
-      <div class="work sh"><div class="t">shell</div><div class="d">policy, previews, insurance, the record</div></div>
+    <div class="harn" style="margin-top:12px">
+      <div class="h"><div class="t">git</div><div class="d">what a force push would destroy, pinned before it runs</div></div>
+      <div class="h"><div class="t">postgres</div><div class="d">rows and dependent tables, pg_dump first, rollback after</div></div>
+      <div class="h"><div class="t">terraform</div><div class="d">the plan before the apply</div></div>
+      <div class="h"><div class="t">shell</div><div class="d">policy, delete previews, insurance, the record</div></div>
     </div>
   </section>
 
@@ -420,9 +420,8 @@ press check it, or pick a chip</pre>
         <p>open source under MIT / Apache-2.0<br>no feature gates. no license keys. ever.<br><span class="faint">cloud sits on top of the free core, never in front of it.</span></p>
       </div>
     </div>
-    </div>
   </section>
-<!-- FROM THE MAKER --><section>
+  <!-- FROM THE MAKER --><section>
     <div class="lab">from the maker</div>
     <div class="maker">
       <div class="who">
@@ -476,6 +475,7 @@ press check it, or pick a chip</pre>
   go.addEventListener("click",check);inp.addEventListener("keydown",function(e){if(e.key==="Enter")check()});
   Array.prototype.forEach.call(document.querySelectorAll(".chip2"),function(b){b.addEventListener("click",function(){inp.value=b.textContent;check()})});
   stats();
+  setTimeout(check,150);
   var tabs=document.querySelectorAll("#tabs button"),cmd=document.getElementById("tabcmd"),note=document.getElementById("tabnote"),bins=document.getElementById("binchips"),cp=document.getElementById("tabcopy"),cur="brew install termaxa/tap/termaxa";
   Array.prototype.forEach.call(tabs,function(t){t.addEventListener("click",function(){
     Array.prototype.forEach.call(tabs,function(x){x.classList.remove("on")});t.classList.add("on");
