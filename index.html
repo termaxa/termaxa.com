@@ -186,6 +186,8 @@
   .harn{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:14px}
   .harn .h{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--panel)}
   .harn .h .t{font-weight:700;color:var(--fg)}.harn .h .d{color:var(--fg-dim);font-size:12px;margin-top:4px;line-height:1.55}
+  .harn .h .t .ic{width:14px;height:14px;vertical-align:-2px;margin-right:4px;color:var(--green)}
+  .harn .h.harness .t::before{content:"» ";color:var(--green)}
   .harn .h.herdr{border-color:rgba(96,165,250,.4)}.harn .h.herdr .t{color:var(--blue)}
   .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
   .tabs button{background:transparent;border:1px solid var(--line-2);border-bottom:0;border-radius:6px 6px 0 0;color:var(--fg-dim);font-family:var(--mono);font-size:12px;padding:6px 12px;cursor:pointer}
@@ -262,17 +264,17 @@ press check it, or pick a chip</pre>
   <section id="what">
     <div class="lab">works with</div>
     <div class="harn">
-      <div class="h"><div class="t">claude code</div><div class="d">hook on Bash and the write tools · live-tested · <code>wrap</code> reaches it too</div></div>
-      <div class="h"><div class="t">codex</div><div class="d">hook, deny only: an ask is a refusal there · apply_patch read as writes</div></div>
-      <div class="h"><div class="t">cursor</div><div class="d">shell events and Write/Delete · the 3.11 hook API captured live</div></div>
-      <div class="h"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
-      <div class="h herdr"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/herdr-termaxa</code></div></div>
+      <div class="h harness"><div class="t">claude code</div><div class="d">hook on Bash and the write tools · live-tested · <code>wrap</code> reaches it too</div></div>
+      <div class="h harness"><div class="t">codex</div><div class="d">hook, deny only: an ask is a refusal there · apply_patch read as writes</div></div>
+      <div class="h harness"><div class="t">cursor</div><div class="d">shell events and Write/Delete · the 3.11 hook API captured live</div></div>
+      <div class="h harness"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
+      <div class="h herdr harness"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/herdr-termaxa</code></div></div>
     </div>
     <div class="harn" style="margin-top:12px">
-      <div class="h"><div class="t">git</div><div class="d">what a force push would destroy, pinned before it runs</div></div>
-      <div class="h"><div class="t">postgres</div><div class="d">rows and dependent tables, pg_dump first, rollback after</div></div>
-      <div class="h"><div class="t">terraform</div><div class="d">the plan before the apply</div></div>
-      <div class="h"><div class="t">shell</div><div class="d">policy, delete previews, insurance, the record</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M23 11.1 12.9 1a1.6 1.6 0 0 0-2.3 0L8.5 3.1l2.7 2.7a1.9 1.9 0 0 1 2.4 2.4l2.6 2.6a1.9 1.9 0 1 1-1.1 1L12.6 9.4v6.4a1.9 1.9 0 1 1-1.6 0V9.4a1.9 1.9 0 0 1-1-2.5L7.3 4.2 1 10.5a1.6 1.6 0 0 0 0 2.3L11.1 23a1.6 1.6 0 0 0 2.3 0L23 13.4a1.6 1.6 0 0 0 0-2.3z"/></svg> git</div><div class="d">what a force push would destroy, pinned before it runs</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> postgres</div><div class="d">rows and dependent tables, pg_dump first, rollback after</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3v6l5 3V6zM15 7v6l5-3V4zM9 11v6l5 3v-6zM3 5v6l5 3V8z"/></svg> terraform</div><div class="d">the plan before the apply</div></div>
+      <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 7 5 5-5 5M12 17h8"/></svg> shell</div><div class="d">policy, delete previews, insurance, the record</div></div>
     </div>
   </section>
 
