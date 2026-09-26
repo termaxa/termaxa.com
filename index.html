@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Termaxa — a gate for the shell commands AI coding agents run</title>
-<meta name="description" content="Termaxa gates the shell commands and file writes an AI coding agent runs — previews the blast radius, backs up first, blocks the dangerous ones, and keeps a record the agent cannot rewrite. Claude Code, Codex, Cursor, Copilot. Free and open source. Try it in your browser at play.termaxa.com.">
+<meta name="description" content="The agent's prompt shows you the command; Termaxa shows you the consequence. It previews the blast radius, backs up first, blocks the dangerous ones, and keeps a record the agent cannot rewrite. Claude Code, Codex, Cursor, Copilot. Free and open source. Try it in your browser at play.termaxa.com.">
 <meta property="og:title" content="Termaxa — a cooperative gate for the shell commands AI agents run">
 <meta property="og:description" content="Preview what will happen. Protect what matters. Roll back when you're wrong. A windshield, not a sandbox.">
 <meta property="og:type" content="website">
@@ -231,7 +231,7 @@
     <text x="0" y="68" font-family="'JetBrains Mono',monospace" font-weight="700" font-size="82" letter-spacing="-2" fill="#4ade80">termaxa</text>
   </svg></div>
       <div class="tagline">Preview what will happen.<span class="s">  ·  </span>Protect what matters.<span class="s">  ·  </span>Roll back when you're wrong.</div>
-      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6">A gate for the <span style="color:var(--fg)">shell commands and file writes</span> your AI coding agent runs. It previews the blast radius, backs up first, blocks the dangerous ones, and keeps a record the agent cannot rewrite. Hooks for Claude Code, Codex, Cursor and Copilot. A windshield, not a sandbox.</div>
+      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6"><span style="color:var(--fg)">The agent's own prompt shows you the command it wants to run. Termaxa shows you the consequence.</span> The files, the rows, the commit a force push would lose: previewed before anything runs, backed up first, the dangerous few blocked, and every decision in a record the agent cannot rewrite. Hooks for Claude Code, Codex, Cursor and Copilot. A windshield, not a sandbox.</div>
 
       <div class="live" id="live">
         <div class="hint">This is the real gate, running on a throwaway project with the default policy. Nothing executes — <code>termaxa check</code> reads the command and answers. Try to get a destructive one past it.</div>
@@ -305,10 +305,10 @@ press check it, or pick a chip</pre>
   <section id="hardened">
     <div class="lab">hardened by real use</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">31</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~13,600</div><div class="l">lines of Rust <span class="faint">(+15,200 of tests)</span></div></div>
-      <div class="num-cell"><div class="v">521</div><div class="l">regression tests</div></div>
-      <div class="num-cell"><div class="v">14</div><div class="l">bugs found in the wild</div></div>
+      <div class="num-cell"><div class="v">32</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~13,800</div><div class="l">lines of Rust <span class="faint">(+15,400 of tests)</span></div></div>
+      <div class="num-cell"><div class="v">523</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">15</div><div class="l">bugs found in the wild</div></div>
       <div class="num-cell"><div class="v">4</div><div class="l">live agents tested</div></div>
     </div>
     <div class="bugs">
@@ -338,7 +338,7 @@ press check it, or pick a chip</pre>
       </div>
     </div>
     <details class="more">
-      <summary>+ the other eight, with dates and versions →</summary>
+      <summary>+ the other nine, with dates and versions →</summary>
       <div class="bugs">
       <div class="bug">
         <div class="t">⚠ git force-push blind spot</div>
@@ -371,6 +371,10 @@ press check it, or pick a chip</pre>
       <div class="bug">
         <div class="t">⚠ the insurance followed the link</div>
         <div class="d">The preview counts a directory link as one entry and never walks into it. The backup copy branched on <code>is_dir()</code>, which follows links — so a folder holding a junction into a live tree passed the size cap as four files and then copied the whole tree behind it, uncapped, and a rollback would have put the link back as a real directory. That is the mechanism of a public incident that deleted 48,000 files through Windows junctions, inside our own insurance. A link is a link now. <span class="v">(v0.19.4)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ a rule that could not read its own spellings</div>
+        <div class="d">A genomics team published a security-reviewed deny list for the <code>gh</code> CLI with one line marked "genuinely open question, unverified". Answering it meant measuring both sides. Their side: Claude Code's matcher steps over an env prefix but lets <code>sh -c</code>, <code>eval</code> and <code>xargs</code> run. Ours: with a <code>gh repo delete*</code> deny, the plain form denied and five spellings the head resolver already understood came back as asks, because the string rules never saw the resolver's readings. Every spelling the resolver knows now feeds every rule; sudo is transparent to a deny and never to an allow. <span class="v">(v0.19.5)</span></div>
       </div>
       </div>
     </details>
@@ -415,7 +419,7 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> codex — live-tested on Windows; its hooks can only deny, so an ask is a refusal there</div>
         <div class="item"><span class="box">[x]</span> copilot — live-tested; an ask arrives as a real prompt with the reason in it</div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.19.4 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.19.5 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -436,7 +440,7 @@ press check it, or pick a chip</pre>
     </div>
   </section>
     <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.19.4</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.19.5</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
