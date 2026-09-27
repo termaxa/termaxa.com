@@ -254,8 +254,8 @@ press check it, or pick a chip</pre>
       </div>
 
       <div class="gif">
-        <img src="/hero-claude-code.gif" width="1200" height="675" alt="Claude Code asked to force-push; Termaxa intercepts inside the agent's own prompt and shows the commit the remote would lose" loading="lazy">
-        <div class="cap">Inside the agent, not beside it: Claude Code asks to force-push, and the gate answers in its own prompt with the commit the remote would lose and the backup it already took. Nothing staged.</div>
+        <img src="/termaxa-claude-code.gif" width="1102" height="772" alt="A real Claude Code 2.1.283 session with its own approvals switched off: it inspects scratch/ freely, tries rm -rf ./scratch, and Termaxa's hook stops it with the reason and the 12 files it would have taken; the agent declines to route around it" loading="lazy">
+        <div class="cap">Inside the agent, not beside it: a real Claude Code session with its own approvals switched off. The inspection runs without a prompt; the <code>rm -rf</code> is stopped with the reason and the 12 files it would have taken, and the agent declines to route around it. Recorded on termaxa 0.19.5.</div>
       </div>
     </div>
   </div>
