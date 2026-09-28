@@ -305,10 +305,10 @@ press check it, or pick a chip</pre>
   <section id="hardened">
     <div class="lab">hardened by real use</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">32</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~13,800</div><div class="l">lines of Rust <span class="faint">(+15,400 of tests)</span></div></div>
-      <div class="num-cell"><div class="v">523</div><div class="l">regression tests</div></div>
-      <div class="num-cell"><div class="v">15</div><div class="l">bugs found in the wild</div></div>
+      <div class="num-cell"><div class="v">33</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~14,600</div><div class="l">lines of Rust <span class="faint">(+15,800 of tests)</span></div></div>
+      <div class="num-cell"><div class="v">532</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">16</div><div class="l">bugs found in the wild</div></div>
       <div class="num-cell"><div class="v">4</div><div class="l">live agents tested</div></div>
     </div>
     <div class="bugs">
@@ -338,7 +338,7 @@ press check it, or pick a chip</pre>
       </div>
     </div>
     <details class="more">
-      <summary>+ the other nine, with dates and versions →</summary>
+      <summary>+ the other ten, with dates and versions →</summary>
       <div class="bugs">
       <div class="bug">
         <div class="t">⚠ git force-push blind spot</div>
@@ -375,6 +375,10 @@ press check it, or pick a chip</pre>
       <div class="bug">
         <div class="t">⚠ a rule that could not read its own spellings</div>
         <div class="d">A genomics team published a security-reviewed deny list for the <code>gh</code> CLI with one line marked "genuinely open question, unverified". Answering it meant measuring both sides. Their side: Claude Code's matcher steps over an env prefix but lets <code>sh -c</code>, <code>eval</code> and <code>xargs</code> run. Ours: with a <code>gh repo delete*</code> deny, the plain form denied and five spellings the head resolver already understood came back as asks, because the string rules never saw the resolver's readings. Every spelling the resolver knows now feeds every rule; sudo is transparent to a deny and never to an allow. <span class="v">(v0.19.5)</span></div>
+      </div>
+      <div class="bug">
+        <div class="t">⚠ the option beside the one a rule was written for</div>
+        <div class="d">Tim Schipper built 0.19.5 from source and found five commands the starter allowed for reading that write: <code>git branch -M</code>, <code>find -fprint</code>, <code>git diff --output</code>, <code>sed -n -i</code> and inline <code>node -e</code>, each allowed with no prompt, no preview and no backup. Reproducing them turned up sed's <code>e</code> command, which runs any shell command under the same allow. And a push that deletes remote branches asked, but its preview said "nothing to push". Now the option that writes or runs turns the allow into an ask that names it, the file it would write is previewed and backed up first, and a push that removes refs says which. Published as <a href="https://github.com/termaxa/termaxa/security/advisories/GHSA-36jf-95xr-37f2">GHSA-36jf-95xr-37f2</a>, credited to him. <span class="v">(v0.19.6)</span></div>
       </div>
       </div>
     </details>
@@ -419,7 +423,7 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> codex — live-tested on Windows; its hooks can only deny, so an ask is a refusal there</div>
         <div class="item"><span class="box">[x]</span> copilot — live-tested; an ask arrives as a real prompt with the reason in it</div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.19.5 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.19.6 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -440,7 +444,7 @@ press check it, or pick a chip</pre>
     </div>
   </section>
     <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.19.5</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.19.6</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
