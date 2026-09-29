@@ -469,7 +469,7 @@ press check it, or pick a chip</pre>
       return esc(l);
     }).join("\n");
   }
-  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed · bypasses found and fixed: 4";}catch(e){}}
+  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed"+(typeof j.bypasses_fixed==="number"?" · bypasses found and fixed: "+j.bypasses_fixed:"");}catch(e){}}
   function post(c){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({command:c})})}
   async function check(){
     var c=inp.value.trim();if(!c)return;go.disabled=true;
