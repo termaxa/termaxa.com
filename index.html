@@ -470,22 +470,24 @@ press check it, or pick a chip</pre>
     }).join("\n");
   }
   async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed"+(typeof j.bypasses_fixed==="number"?" · bypasses found and fixed: "+j.bypasses_fixed:"");}catch(e){}}
-  function post(c){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({command:c})})}
-  async function check(){
+  // auto: the check this page runs on load, so the playground can answer it without counting it as an attempt.
+  function post(c,auto){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(auto?{command:c,auto:true}:{command:c})})}
+  async function check(auto){
+    auto=auto===true;
     var c=inp.value.trim();if(!c)return;go.disabled=true;
     out.textContent="$ termaxa check "+JSON.stringify(c)+"\n…";
     try{
-      var r=await post(c);
-      if(r.status===503){out.textContent="$ termaxa check "+JSON.stringify(c)+"\nbusy, retrying…";await new Promise(function(x){setTimeout(x,1500)});r=await post(c);}
+      var r=await post(c,auto);
+      if(r.status===503){out.textContent="$ termaxa check "+JSON.stringify(c)+"\nbusy, retrying…";await new Promise(function(x){setTimeout(x,1500)});r=await post(c,auto);}
       if(!r.ok){out.textContent=await r.text();return;}
       var j=await r.json();render("$ termaxa check "+JSON.stringify(c)+"\n"+j.output);stats();
     }catch(e){out.textContent="the playground didn't answer ("+e+"). It's at play.termaxa.com.";}
     finally{go.disabled=false;}
   }
-  go.addEventListener("click",check);inp.addEventListener("keydown",function(e){if(e.key==="Enter")check()});
+  go.addEventListener("click",function(){check(false)});inp.addEventListener("keydown",function(e){if(e.key==="Enter")check(false)});
   Array.prototype.forEach.call(document.querySelectorAll(".chip2"),function(b){b.addEventListener("click",function(){inp.value=b.textContent;check()})});
   stats();
-  setTimeout(check,150);
+  setTimeout(function(){check(true)},150);
   var tabs=document.querySelectorAll("#tabs button"),cmd=document.getElementById("tabcmd"),note=document.getElementById("tabnote"),bins=document.getElementById("binchips"),cp=document.getElementById("tabcopy"),cur="brew install termaxa/tap/termaxa";
   Array.prototype.forEach.call(tabs,function(t){t.addEventListener("click",function(){
     Array.prototype.forEach.call(tabs,function(x){x.classList.remove("on")});t.classList.add("on");
