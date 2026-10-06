@@ -254,7 +254,7 @@ press check it, or pick a chip</pre>
       </div>
 
       <div class="gif">
-        <img src="/termaxa-claude-code.gif" width="1102" height="772" alt="A real Claude Code 2.1.283 session with its own approvals switched off: it inspects scratch/ freely, tries rm -rf ./scratch, and Termaxa's hook stops it with the reason and the 12 files it would have taken; the agent declines to route around it" loading="lazy">
+        <img src="/termaxa-claude-code-v2.gif" width="1102" height="772" alt="A real Claude Code 2.1.283 session with its own approvals switched off: it inspects scratch/ freely, tries rm -rf ./scratch, and Termaxa's hook stops it with the reason and the 12 files it would have taken; the agent declines to route around it" loading="lazy">
         <div class="cap">Inside the agent, not beside it: a real Claude Code session with its own approvals switched off. The inspection runs without a prompt; the <code>rm -rf</code> is stopped with the reason and the 12 files it would have taken, and the agent declines to route around it. Recorded on termaxa 0.19.5.</div>
       </div>
     </div>
@@ -268,7 +268,7 @@ press check it, or pick a chip</pre>
       <div class="h harness"><div class="t">codex</div><div class="d">hook, deny only: an ask is a refusal there · apply_patch read as writes</div></div>
       <div class="h harness"><div class="t">cursor</div><div class="d">shell events and Write/Delete · the 3.11 hook API captured live</div></div>
       <div class="h harness"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
-      <div class="h herdr harness"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/herdr-termaxa</code></div></div>
+      <div class="h herdr harness"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/termaxa</code></div></div>
     </div>
     <div class="harn" style="margin-top:12px">
       <div class="h"><div class="t"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M23 11.1 12.9 1a1.6 1.6 0 0 0-2.3 0L8.5 3.1l2.7 2.7a1.9 1.9 0 0 1 2.4 2.4l2.6 2.6a1.9 1.9 0 1 1-1.1 1L12.6 9.4v6.4a1.9 1.9 0 1 1-1.6 0V9.4a1.9 1.9 0 0 1-1-2.5L7.3 4.2 1 10.5a1.6 1.6 0 0 0 0 2.3L11.1 23a1.6 1.6 0 0 0 2.3 0L23 13.4a1.6 1.6 0 0 0 0-2.3z"/></svg> git</div><div class="d">what a force push would destroy, pinned before it runs</div></div>
@@ -414,7 +414,7 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> native writes through the gate — <code>Write</code>/<code>Edit</code>/<code>Delete</code> and patch headers judged by path rules, insured, receipted</div>
         <div class="item"><span class="box">[x]</span> <code>termaxa replay</code> — every command your agents ever ran, judged from their transcripts; the honest ask ratio before you install</div>
         <div class="item"><span class="box">[x]</span> the playground — <a href="https://play.termaxa.com">play.termaxa.com</a>, the real gate in a browser, and the four published advisories as solved challenges</div>
-        <div class="item"><span class="box">[x]</span> herdr plugin — launch an agent under the gate, tail the record, see why a pane went red (<code>herdr plugin install termaxa/herdr-termaxa</code>)</div>
+        <div class="item"><span class="box">[x]</span> herdr plugin — launch an agent under the gate, tail the record, see why a pane went red (<code>herdr plugin install termaxa/termaxa</code>)</div>
         <div class="item"><span class="box">[x]</span> cursor — live-tested (incl. the 3.11 hook API)</div>
         <div class="item"><span class="box">[x]</span> post-execution receipts — approved commands don't trip the breaker</div>
         <div class="item"><span class="box">[x]</span> execution report — session &amp; 30-day flight recorder</div>
