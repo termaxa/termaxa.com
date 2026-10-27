@@ -470,7 +470,7 @@ press check it, or pick a chip</pre>
       return esc(l);
     }).join("\n");
   }
-  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed"+(typeof j.bypasses_fixed==="number"?" · bypasses found and fixed: "+j.bypasses_fixed:"");}catch(e){}}
+  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed";}catch(e){}}
   // auto: the check this page runs on load, so the playground can answer it without counting it as an attempt.
   function post(c,auto){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(auto?{command:c,auto:true}:{command:c})})}
   async function check(auto){
