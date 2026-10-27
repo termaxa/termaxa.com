@@ -306,9 +306,9 @@ press check it, or pick a chip</pre>
   <section id="hardened">
     <div class="lab">hardened by real use</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">42</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~18,400</div><div class="l">lines of Rust <span class="faint">(+18,800 of tests)</span></div></div>
-      <div class="num-cell"><div class="v">589</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">43</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~19,100</div><div class="l">lines of Rust <span class="faint">(+20,000 of tests)</span></div></div>
+      <div class="num-cell"><div class="v">599</div><div class="l">regression tests</div></div>
       <a class="num-cell" href="https://github.com/termaxa/termaxa/blob/main/docs/found-in-the-wild.md" style="display:block" title="the list: every one, with how it was found"><div class="v">48</div><div class="l" style="text-decoration:underline dotted">bugs found in the wild</div></a>
       <div class="num-cell"><div class="v">4</div><div class="l">live agents tested</div></div>
     </div>
@@ -414,7 +414,7 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> the wrapper reaches the agent — <code>wrap</code> steers Claude Code to its shims through <code>CLAUDE_CODE_SHELL</code>; Codex hardcodes its shell and is gated by its hooks instead</div>
         <div class="item"><span class="box">[x]</span> native writes through the gate — <code>Write</code>/<code>Edit</code>/<code>Delete</code> and patch headers judged by path rules, insured, receipted</div>
         <div class="item"><span class="box">[x]</span> <code>termaxa replay</code> — every command your agents ever ran, judged from their transcripts; the honest ask ratio before you install</div>
-        <div class="item"><span class="box">[x]</span> the playground — <a href="https://play.termaxa.com">play.termaxa.com</a>, the real gate in a browser, and the seven published advisories as solved challenges</div>
+        <div class="item"><span class="box">[x]</span> the playground — <a href="https://play.termaxa.com">play.termaxa.com</a>, the real gate in a browser, with published advisories as solved challenges</div>
         <div class="item"><span class="box">[x]</span> herdr plugin — launch an agent under the gate, tail the record, see why a pane went red (<code>herdr plugin install termaxa/termaxa</code>)</div>
         <div class="item"><span class="box">[x]</span> cursor — live-tested (incl. the 3.11 hook API)</div>
         <div class="item"><span class="box">[x]</span> post-execution receipts — approved commands don't trip the breaker</div>
@@ -424,7 +424,7 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> codex — live-tested on Windows; its hooks can only deny, so an ask is a refusal there</div>
         <div class="item"><span class="box">[x]</span> copilot — live-tested; an ask arrives as a real prompt with the reason in it</div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.21.6 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.21.7 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -445,7 +445,7 @@ press check it, or pick a chip</pre>
     </div>
   </section>
     <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.21.6</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.21.7</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
@@ -470,7 +470,7 @@ press check it, or pick a chip</pre>
       return esc(l);
     }).join("\n");
   }
-  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed"+(typeof j.bypasses_fixed==="number"?" · bypasses found and fixed: "+j.bypasses_fixed:"");}catch(e){}}
+  async function stats(){try{var r=await fetch(API+"/api/stats");if(!r.ok)return;var j=await r.json();st.textContent=j.attempts+" attempts on the playground: "+j.denied+" denied, "+j.asked+" asked, "+j.allowed+" allowed";}catch(e){}}
   // auto: the check this page runs on load, so the playground can answer it without counting it as an attempt.
   function post(c,auto){return fetch(API+"/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(auto?{command:c,auto:true}:{command:c})})}
   async function check(auto){
