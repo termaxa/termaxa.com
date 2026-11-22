@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Termaxa — a gate for the shell commands AI coding agents run</title>
-<meta name="description" content="The agent's prompt shows you the command; Termaxa shows you the consequence. It previews the blast radius, backs up first, blocks the dangerous ones, and keeps a record the agent cannot rewrite. Claude Code, Codex, Cursor, Copilot. Free and open source. Try it in your browser at play.termaxa.com.">
+<meta name="description" content="The agent's prompt shows you the command; Termaxa shows you the consequence. It previews the blast radius, backs up first, blocks the dangerous ones, and keeps a hash-chained record of every decision. Claude Code, Codex, Cursor, Copilot, Hermes Agent. Free and open source. Try it in your browser at play.termaxa.com.">
 <meta property="og:title" content="Termaxa — a cooperative gate for the shell commands AI agents run">
 <meta property="og:description" content="Preview what will happen. Protect what matters. Roll back when you're wrong. A windshield, not a sandbox.">
 <meta property="og:type" content="website">
@@ -231,7 +231,7 @@
     <text x="0" y="68" font-family="'JetBrains Mono',monospace" font-weight="700" font-size="82" letter-spacing="-2" fill="#4ade80">termaxa</text>
   </svg></div>
       <div class="tagline">Preview what will happen.<span class="s">  ·  </span>Protect what matters.<span class="s">  ·  </span>Roll back when you're wrong.</div>
-      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6"><span style="color:var(--fg)">The agent's own prompt shows you the command it wants to run. Termaxa shows you the consequence.</span> The files, the rows, the commit a force push would lose: previewed before anything runs, backed up first, the dangerous few blocked, and every decision in a record the agent cannot rewrite. Hooks for Claude Code, Codex, Cursor and Copilot. A windshield, not a sandbox.</div>
+      <div class="tagline" style="color:var(--fg-dim);font-size:clamp(11px,1.5vw,13.5px);margin-top:10px;line-height:1.6"><span style="color:var(--fg)">The agent's own prompt shows you the command it wants to run. Termaxa shows you the consequence.</span> The files, the rows, the commit a force push would lose: previewed before anything runs, backed up first, the dangerous few blocked, and every decision in a hash-chained record. Hooks for Claude Code, Codex, Cursor, Copilot and Hermes Agent. A windshield, not a sandbox.</div>
 
       <div class="live" id="live">
         <div class="hint">This is the real gate, running on a throwaway project with the default policy. Nothing executes — <code>termaxa check</code> reads the command and answers. Try to get a destructive one past it.</div>
@@ -265,10 +265,11 @@ press check it, or pick a chip</pre>
   <section id="what">
     <div class="lab">works with</div>
     <div class="harn">
-      <div class="h harness"><div class="t">claude code</div><div class="d">hook on Bash and the write tools · live-tested · <code>wrap</code> reaches it too</div></div>
+      <div class="h harness"><div class="t">claude code</div><div class="d">hook or plugin on Bash and the write tools · live-tested · <code>wrap</code> reaches it too</div></div>
       <div class="h harness"><div class="t">codex</div><div class="d">hook, deny only: an ask is a refusal there · apply_patch read as writes</div></div>
       <div class="h harness"><div class="t">cursor</div><div class="d">shell events and Write/Delete · the 3.11 hook API captured live</div></div>
       <div class="h harness"><div class="t">copilot cli</div><div class="d">an ask arrives as a real prompt with the reason in it</div></div>
+      <div class="h harness"><div class="t">hermes agent</div><div class="d">one policy for every Hermes call · an ask goes to its approval prompt, but under <code>--yolo</code> or <code>-z</code> Hermes approves it itself</div></div>
       <div class="h herdr harness"><div class="t">herdr</div><div class="d">launch an agent under the gate, tail the record, see why a pane went red<br><code>herdr plugin install termaxa/termaxa</code></div></div>
     </div>
     <div class="harn" style="margin-top:12px">
@@ -306,11 +307,11 @@ press check it, or pick a chip</pre>
   <section id="hardened">
     <div class="lab">hardened by real use</div>
     <div class="nums">
-      <div class="num-cell"><div class="v">48</div><div class="l">releases</div></div>
-      <div class="num-cell"><div class="v">~26,000</div><div class="l">lines of Rust <span class="faint">(+28,000 of tests)</span></div></div>
-      <div class="num-cell"><div class="v">723</div><div class="l">regression tests</div></div>
+      <div class="num-cell"><div class="v">49</div><div class="l">releases</div></div>
+      <div class="num-cell"><div class="v">~27,500</div><div class="l">lines of Rust <span class="faint">(+29,900 of tests)</span></div></div>
+      <div class="num-cell"><div class="v">757</div><div class="l">regression tests</div></div>
       <a class="num-cell" href="https://github.com/termaxa/termaxa/blob/main/docs/found-in-the-wild.md" style="display:block" title="the list: every one, with how it was found"><div class="v">51</div><div class="l" style="text-decoration:underline dotted">bugs found in the wild</div></a>
-      <div class="num-cell"><div class="v">4</div><div class="l">live agents tested</div></div>
+      <div class="num-cell"><div class="v">5</div><div class="l">live agents tested</div></div>
     </div>
     <div class="bugs">
       <div class="bug">
@@ -408,7 +409,7 @@ press check it, or pick a chip</pre>
       <div class="next-box">
         <div class="item"><span class="box">[x]</span> supervised mode — a daemon under <em>your</em> user decides; the agent runs as an account that cannot read the audit log, edit the backups, or stop it</div>
         <div class="item"><span class="box">[x]</span> resolved-target rules — <code>&gt; .env</code> and <code>&gt; ./.env</code> are one file, not two strings</div>
-        <div class="item"><span class="box">[x]</span> hash-chained audit — an edited or removed entry is detectable</div>
+        <div class="item"><span class="box">[x]</span> hash-chained audit: corruption and casual edits show, and in supervised mode the agent cannot reach it</div>
         <div class="item"><span class="box">[x]</span> the gate reads what the agent actually runs — <code>sh -c</code> strings, <code>bash -lc</code>, a redirect that isn't a target, a PowerShell assignment</div>
         <div class="item"><span class="box">[x]</span> the closed side, by choice — <code>unrecognised: deny</code> and <code>backup_failure: deny</code> for unattended runs</div>
         <div class="item"><span class="box">[x]</span> the wrapper reaches the agent — <code>wrap</code> steers Claude Code to its shims through <code>CLAUDE_CODE_SHELL</code>; Codex hardcodes its shell and is gated by its hooks instead</div>
@@ -423,8 +424,10 @@ press check it, or pick a chip</pre>
         <div class="item"><span class="box">[x]</span> delete blast radius — what an <code>rm</code> actually costs</div>
         <div class="item"><span class="box">[x]</span> codex — live-tested on Windows; its hooks can only deny, so an ask is a refusal there</div>
         <div class="item"><span class="box">[x]</span> copilot — live-tested; an ask arrives as a real prompt with the reason in it</div>
+        <div class="item"><span class="box">[x]</span> claude code plugin: <code>/plugin install termaxa --marketplace termaxa/termaxa</code> covers every project you open, with no <code>init</code></div>
+        <div class="item"><span class="box">[x]</span> hermes agent: live-tested on Windows; one policy for every Hermes call, wired by <code>termaxa init --hermes</code></div>
         <div class="item"><span class="box">[ ]</span> termaxa cloud <span class="faint">(shared policies &amp; approvals)</span></div>
-        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.23.0 today · built in the open · honest about what's not done</div>
+        <div style="color:var(--fg-faint);font-size:12.5px;margin-top:10px">v0.24.0 today · built in the open · honest about what's not done</div>
       </div>
       <div class="free-box">
         <div class="big">this tool is free forever.</div>
@@ -445,7 +448,7 @@ press check it, or pick a chip</pre>
     </div>
   </section>
     <div class="foot">
-    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.23.0</div>
+    <div class="ver"><span class="p">$</span> termaxa --version<br>termaxa 0.24.0</div>
     <div class="links">
       <a href="https://github.com/termaxa/termaxa">github</a>
       <a href="https://github.com/termaxa/termaxa#readme">docs</a>
